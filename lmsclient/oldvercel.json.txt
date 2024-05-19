@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "./package.json",
+      "use": "@vercel/static-build"
+    }
+    
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/build/$1"
+    }
+    
+  ]
+}
+// WARN! Due to `builds` existing in your configuration file, the Build and Development Settings defined in 
+// your Project Settings will not apply.
+// ПРЕДУПРЕЖДАТЬ! Поскольку в вашем файле конфигурации существуют «сборки», параметры сборки и разработки,
+//  определенные в настройках вашего проекта, не будут применяться.

@@ -1,0 +1,33 @@
+https://github.com/pacocoursey/next-themes/issues/169
+
+statusunknown418 прокомментировал 6 мая 2023 г.
+ThemeProviderделает две вещи (как на сервере, так и на клиенте):
+
+Добавляет класс в<html>
+Добавляет атрибут стиляcolorScheme в<html>
+Проблема в том, что HTML, отображаемый на сервере, не совпадает с HTML, отображаемым на клиенте. Следовательно, вы видите предупреждение Warning: Extra attributes from the server: class,style.
+
+Я использую Next 13 с новым appкаталогом, и ошибка гидратации устраняется путем применения атрибутов classи style:
+
+export default function RootLayout({ children }: RootLayoutProps) {
+  return (
+    <html
+      lang="en"
+      style={{ colorScheme: 'light' }} // <--
+      className={classNames(fontSans.variable, 'light')} // <--
+    >
+      <body className="min-h-screen">
+        <ThemeProvider attribute="class" defaultTheme="light">
+          {children}
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
+Однако настоящая проблема заключается в том, что предпочтения пользователей меняются. Следующая тема сохраняет предпочтительную тему в файле localStorage, что не будет работать, поскольку сервер не знает о предпочтениях. Также см. vercel/next.js#21982 .
+
+Возможным решением является использование файлов cookie или сохранение предпочтений в базе данных (которую можно получить на стороне сервера).
+
+Редактировать. Можно подавить предупреждение о гидратации, применив реквизит suppressHydrationWarning( <html>все это указано в названии). См. № 152 (комментарий).
+
+жесткое кодирование styleи classNameприведет к другой ошибке, если пользователь попытается изменить тему по умолчанию на lightили, darkнапример
