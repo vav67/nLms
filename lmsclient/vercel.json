@@ -7,11 +7,5 @@
       
     } 
   
-  ],
-   "rewrites": [
-     {
-    "source": "/(.*)",
-    "destination": "https://nlmserver.vercel.app/api/v1/"
-    }
   ]
  }
