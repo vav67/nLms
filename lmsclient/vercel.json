@@ -3,14 +3,17 @@
   "builds": [
     {
       "src": "./package.json",
-      "use": "@vercel/static-build" 
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      } 
     } 
   
   ],
    "rewrites": [
      {
     "source": "/(.*)",
-    "destination": "/dist/$1"
+    "destination": "https://nlmserver.vercel.app/api/v1/"
     }
   ]
  }
