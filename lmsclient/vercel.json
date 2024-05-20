@@ -3,9 +3,13 @@
   "builds": [
     {
       "src": "./package.json",
-      "use": "@vercel/static-build" 
+      "use": "@vercel/next" 
       
     } 
   
-  ]
+  ],
+  "rewrites": [
+    { "source": "https://testclient-iota.vercel.app/",
+      "destination": "https://nlmserver.vercel.app/api/v1/"  }
+    ]
  }
