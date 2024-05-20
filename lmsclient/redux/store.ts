@@ -32,22 +32,22 @@ RTK Query может начать получать данные в вашем п
 * */
 
 
-// call the load user function on every page load
-//вызывать функцию загрузки юзера при загрузке страни
-const initializeApp = async () => {
- //вызываем токен обновления 06-45-45 
- // 07-58-46 это теперь отключено 
- // так как это обновление полностью  работает над серверной частью
-  //  await store.dispatch(
-  //   apiSlice.endpoints.refreshToken.initiate({}, { forceRefetch: true }) 
-  //  );
+// // call the load user function on every page load
+// //вызывать функцию загрузки юзера при загрузке страни
+// const initializeApp = async () => {
+//  //вызываем токен обновления 06-45-45 
+//  // 07-58-46 это теперь отключено 
+//  // так как это обновление полностью  работает над серверной частью
+//   //  await store.dispatch(
+//   //   apiSlice.endpoints.refreshToken.initiate({}, { forceRefetch: true }) 
+//   //  );
 
   
-   await store.dispatch(
-         apiSlice.endpoints.loadUser.initiate({}, { forceRefetch: true })
-   );
+//    await store.dispatch(
+//          apiSlice.endpoints.loadUser.initiate({}, { forceRefetch: true })
+//    );
 
-};
+// };
 
-  initializeApp()  // запускаем пробую опять после как добавил
+//   initializeApp()  // запускаем пробую опять после как добавил
   //  updateAccessToken, //рефреш до аутентифик-и 06-47-29 "синхронизация" обновляет токен там next()
