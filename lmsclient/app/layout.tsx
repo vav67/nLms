@@ -90,7 +90,7 @@ export default function RootLayout({
  
 
 
-  console.log(  '======== итак children='  )   
+ // console.log(  '======== итак children='  )   
 
     // return ( 
     //   <>{isLoading ? <Loader /> : <div>{children}</div>}</> 

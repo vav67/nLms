@@ -1,4 +1,4 @@
-"use client";
+///////////"use client";
 //конфигурация моего хранилища
 
 import { configureStore } from "@reduxjs/toolkit";
