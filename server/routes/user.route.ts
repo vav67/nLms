@@ -14,7 +14,8 @@ import {
   getAllUsers,
      updateUserRole,
    deleteUser,
- 
+   cookieAuth,
+
 } from "../controllers/user.controller";
 
 const userRouter = express.Router(); // маршрутизатор
@@ -42,7 +43,10 @@ userRouter.get("/refresh", updateAccessToken);
 //  )
 userRouter.get("/me", isAutheticated, getUserInfo);
 
- 
+//----------------------------------------------
+userRouter.get("/get-cookie", cookieAuth);
+
+
      userRouter.post("/social-auth", socialAuth);
 
 

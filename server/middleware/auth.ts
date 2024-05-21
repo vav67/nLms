@@ -19,6 +19,7 @@ export const isAutheticated = CatchAsyncError(
 
     const access_token = req.cookies.access_token as string;
 
+    
     if (!access_token) {
       return next(
         new ErrorHandler("No access_token this resource", 400)
