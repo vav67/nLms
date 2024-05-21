@@ -15,8 +15,9 @@ import { Response } from "express";
 //мы использем redis поэтому заменим на    
 export const getUserById = async (id: string, res: Response) => {
 
-  console.log( "получим с кэша redis, и пользователь передается в формате Json")
-
+  //console.log( "получим с кэша redis, и пользователь передается в формате Json")
+   // соединение с бд
+   await connectDB();
   const userJson = await redis.get(id);
  // получим с кэша redis, и пользователь передается в
  // формате Json
@@ -24,6 +25,8 @@ export const getUserById = async (id: string, res: Response) => {
     const user = JSON.parse(userJson);
     res.status(201).json({ success: true, user, });
   }
+ 
+
 };
 
 

@@ -318,7 +318,7 @@ export const getUserInfo = CatchAsyncError(
    // }
 
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 400));
+      return next(new ErrorHandler(error.message, 411));
     }
   }
 );
