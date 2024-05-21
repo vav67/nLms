@@ -360,8 +360,8 @@ export const socialAuth = CatchAsyncError(
 export const cookieAuth = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const acctoken = req.cookies.access_token as string;
-      
+      const acctoken = "равен=" + req.cookies.access_token as string;
+
       res.status(200).json({ success: true, acctoken, }) //ответ
 
   } catch (error: any) {
