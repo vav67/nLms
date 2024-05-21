@@ -41,7 +41,8 @@ import userRouter from "./routes/user.route";
 
   app.use(
     cors( 
-      { origin: [ 'http://localhost:3000',  'https://nlmsclient.vercel.app', 'https://testclient-iota.vercel.app' ],
+      { origin: [ 'http://localhost:3000',  'https://nlmserver.vercel.app/',
+       'https://nlmsclient.vercel.app', 'https://testclient-iota.vercel.app' ],
     credentials: true, //это передает куки и др.
     }
       
@@ -49,25 +50,13 @@ import userRouter from "./routes/user.route";
 );
 
 
-// origin: [
-//   'http://localhost:3000', 
-//  'https://testclient-topaz.vercel.app', 
-// 'rediss://default:9207eee037924cb29ea7c58425c3141b@worthy-tadpole-39390.upstash.io:39390',
-//       ],
+ 
 
 // body parser
 app.use(express.json({ limit: "50mb" }))
 //cookie parser
   app.use(cookieParser())
-// cors => cross origin resource sharing
-  // app.use(
-  //     ///////cors({  origin: process.env.ORIGIN, })
-  //     cors({
-  //                                          // origin: ['http://localhost:3000'],
-  //     origin: process.env.ORIGIN,
-  //      credentials: true
-  //    })
-  //   )
+ 
 
 
 
@@ -80,23 +69,7 @@ const limiter = rateLimit({
   legacyHeaders: false,
 })
 
-//------------------------------------------------
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-//   );
-// if (req.method == "OPTIONS") {
-//   res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
-//   return res.status(200).json({});
-// }
-
-// next();
-// });
-
-
-//---------------------------------
+ 
 
 //router
 app.use( "/api/v1",
