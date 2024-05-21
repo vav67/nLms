@@ -15,10 +15,10 @@ export const isAutheticated = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
    
      // соединение с бд
-  await connectDB();
+//  await connectDB();
 
     //const access_token = req.cookies.access_token as string;
-    const access_token = req.cookies.access_token  //as string;
+    const access_token = req.cookies.access_token   as string;
 
     if (!access_token) {
       return next(
