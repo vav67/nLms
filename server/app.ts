@@ -44,8 +44,9 @@ import userRouter from "./routes/user.route";
       { origin: [ 'http://localhost:3000',  'https://nlmserver.vercel.app/',
        'https://nlmsclient.vercel.app', 'https://testclient-iota.vercel.app' ],
     credentials: true, //это передает куки и др.
-    }
-      
+              methods:['GET','POST','PUT','DELETE']  //сам добавил https://github.com/vercel/next.js/discussions/36487
+  }
+   
       )
 );
 
@@ -87,12 +88,12 @@ app.use( "/api/v1",
    //testing api - это тест API
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {
     
- //const acctoken = req.cookies.access_token as string;
- const acc = JSON.parse(req.cookies.get('access_token')?.value || 'no')
+ const acc = req.cookies.access_token as string;
+ //const acc = JSON.parse(req.cookies.get('access_token')?.value || 'no')
 
   res.status(200).json({
       success: true,
-      message: "API is working-21may- 19:00 acctoken="+ acc ,
+      message: "API is working-22may- 14:00 acctoken="+ acc ,
     });
 
   });

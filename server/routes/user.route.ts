@@ -41,7 +41,8 @@ userRouter.get("/refresh", updateAccessToken);
 //  isAutheticated, //проверка аутен-ции из кука
 //  getUserInfo
 //  )
-userRouter.get("/me", isAutheticated, getUserInfo);
+//userRouter.get("/me", isAutheticated, getUserInfo);
+userRouter.post("/me", isAutheticated, getUserInfo); //сам меняю
 
 //----------------------------------------------
 userRouter.get("/get-cookie", cookieAuth);
