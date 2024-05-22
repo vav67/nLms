@@ -21,7 +21,9 @@ export const accessTokenOptions: ITokenOptions = {
   expires: new Date(Date.now() + accessTokenExpire * 60 * 60 * 1000),
   maxAge: accessTokenExpire * 60 * 60 * 1000,
   httpOnly: true,
-  sameSite: "lax",
+ // sameSite: "lax",
+ sameSite: "none",
+ secure:true,
 };
 
 // токен обновления
@@ -29,8 +31,12 @@ export const refreshTokenOptions: ITokenOptions = {
   expires: new Date(Date.now() + refreshTokenExpire * 24 * 60 * 60 * 1000),
   maxAge: refreshTokenExpire * 24 * 60 * 60 * 1000,
   httpOnly: true,
-  sameSite: "lax",
+  //sameSite: "lax",
+  sameSite: "none",
+  secure:true,
 };
+
+
 
 //------------------------
 
@@ -41,8 +47,8 @@ export const sendToken = (user: IUser, statusCode: number, res: Response) => {
 //токен обновления
   const refreshToken = user.SignRefreshToken();
   
-  console.log( user, '<-user итак по идее sendToken accessToken=',accessToken, 
-   '  refreshToken= ',refreshToken)
+  // console.log( user, '<-user итак по идее sendToken accessToken=',accessToken, 
+  //  '  refreshToken= ',refreshToken)
 
   // upload session to redis загрузить сеанс в Redis
   redis.set(user._id, JSON.stringify(user) as any);
@@ -50,14 +56,16 @@ export const sendToken = (user: IUser, statusCode: number, res: Response) => {
  
 // only set secure to true in production
 //установите для безопасности значение true только в производстве
-  if (process.env.NODE_ENV === "production") {
-    accessTokenOptions.secure = true;
-  }
+  // if (process.env.NODE_ENV === "production") {
+  //   accessTokenOptions.secure = true;
+  // } 
+  // 06-41-12 закоментировали тк производство не SEC 
 
   res.cookie("access_token", accessToken, accessTokenOptions);
   res.cookie("refresh_token", refreshToken, refreshTokenOptions);
 
-  console.log( '---sendToken отправим-true  accessToken=',accessToken, 
-  '  user= ', user)
+  // console.log( '---sendToken отправим-true  accessToken=',accessToken, 
+  // '  user= ', user)
+
   res.status(statusCode).json({ success: true,  user, accessToken,  });
 };

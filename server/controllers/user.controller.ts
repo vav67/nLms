@@ -54,6 +54,8 @@ export const registrationUser = CatchAsyncError(
         password,
       };
       
+
+      //???  const activationToken = (0, exports.createActivationToken)(user); на исходнике 06-41-55
       const activationToken = createActivationToken(user);
     //  console.log("activationToken=", activationToken)
 

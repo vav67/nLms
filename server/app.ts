@@ -38,10 +38,10 @@ import userRouter from "./routes/user.route";
   //   credentials: true,
   // }));
   //origin - настраивает заголовок Access-Control-Allow-Origin. 
-
+//'http://localhost:3000', 
   app.use(
     cors( 
-      { origin: [ 'http://localhost:3000',  'https://nlmserver.vercel.app/',
+      { origin: [  'https://nlmserver.vercel.app/',
        'https://nlmsclient.vercel.app', 'https://testclient-iota.vercel.app' ],
     credentials: true, //это передает куки и др.
               methods:['GET','POST','PUT','DELETE']  //сам добавил https://github.com/vercel/next.js/discussions/36487
