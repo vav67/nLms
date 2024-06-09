@@ -3,6 +3,9 @@ import { NextFunction, Request, Response } from "express";
 import { IUser } from "../models/user.model";
 import { redis } from "./redis";
 
+import jwt, { JwtPayload } from "jsonwebtoken"; //проверка
+
+
 interface ITokenOptions {
   expires: Date;
   maxAge: number;   //макс время жизни
@@ -42,13 +45,19 @@ export const refreshTokenOptions: ITokenOptions = {
 
 //ф-я отправки токена
 export const sendToken = (user: IUser, statusCode: number, res: Response) => {
+ 
+ // console.log( '--выполнение  sendToken=',  statusCode )
   //токен доступа
   const accessToken = user.SignAccessToken();
 //токен обновления
   const refreshToken = user.SignRefreshToken();
   
-  // console.log( user, '<-user итак по идее sendToken accessToken=',accessToken, 
-  //  '  refreshToken= ',refreshToken)
+    // console.log( user, '<-user итак по идее sendToken accessToken=',accessToken, 
+    // '  refreshToken= ',refreshToken)
+ 
+    // const decoded = jwt.verify( accessToken ,  process.env.ACCESS_TOKEN as string)  as JwtPayload;
+    
+    // console.log('=== sendToken декодируем =', decoded) 
 
   // upload session to redis загрузить сеанс в Redis
   redis.set(user._id, JSON.stringify(user) as any);

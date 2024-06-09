@@ -41,7 +41,7 @@ import userRouter from "./routes/user.route";
 //'http://localhost:3000', 
   app.use(
     cors( 
-      { origin: [  'https://nlmserver.vercel.app/',
+      { origin: [  'https://nlmserver.vercel.app/', 'http://localhost:3000',
        'https://nlmsclient.vercel.app', 'https://testclient-iota.vercel.app' ],
     credentials: true, //это передает куки и др.
               methods:['GET','POST','PUT','DELETE']  //сам добавил https://github.com/vercel/next.js/discussions/36487
@@ -93,7 +93,7 @@ app.get("/test", (req: Request, res: Response, next: NextFunction) => {
 
   res.status(200).json({
       success: true,
-      message: "API is working-22may- 14:00 acctoken="+ acc ,
+      message: "API is working-09june- 13:00 acctoken="+ acc ,
     });
 
   });

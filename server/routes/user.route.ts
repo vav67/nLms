@@ -15,12 +15,16 @@ import {
      updateUserRole,
    deleteUser,
    cookieAuth,
+   tttUser, ///сам
 
 } from "../controllers/user.controller";
 
 const userRouter = express.Router(); // маршрутизатор
 //
- import { authorizeRoles, isAutheticated } from "../middleware/auth";
+ import { authorizeRoles, isAutheticated , isttt } from "../middleware/auth";
+
+
+
 
  userRouter.post("/registration", registrationUser);
   userRouter.post("/activate-user", activateUser);
@@ -41,8 +45,10 @@ userRouter.get("/refresh", updateAccessToken);
 //  isAutheticated, //проверка аутен-ции из кука
 //  getUserInfo
 //  )
-//userRouter.get("/me", isAutheticated, getUserInfo);
-userRouter.post("/me", isAutheticated, getUserInfo); //сам меняю
+ //userRouter.get("/me", isAutheticated, getUserInfo);
+  userRouter.post("/me", isAutheticated, getUserInfo); //сам меняю
+  
+ userRouter.post("/ttt", isttt , tttUser) //добавил для пробы июнь 2024 
 
 //----------------------------------------------
 userRouter.get("/get-cookie", cookieAuth);

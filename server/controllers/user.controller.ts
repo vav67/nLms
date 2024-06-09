@@ -30,6 +30,46 @@ interface IRegistrationBody {
   password: string;
   avatar?: string;
 }
+
+
+
+
+
+
+
+//========tttUser=============================
+
+export const tttUser = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+  console.log("---------контроллер- /////// ")
+  const cook = req.cookies.access_token as string;
+  //////////    const userId = req.user?._id;
+ //         if (userId) {
+  ///////////      getUserById(userId, res);
+   // } else {
+   //     return next(new ErrorHandler("User ID is not defined", 400));
+   // }
+
+   //console.log("@@@@@@@@@ tttUser=", req)
+   res.status(200).json({
+    success: true,
+    message: "API  tttUser   is working  09июня  ==="+ cook,
+  });
+
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 411));
+    }
+  }
+);
+
+//==========================================
+
+
+
+
+
+
 //----------------- регистрация пользователя
 export const registrationUser = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -288,15 +328,16 @@ if (!session) {
 
       req.user = user;
 //обноввим файл cookie
- console.log("----------обноввим файл cookie "  ) 
+ //console.log("----------обноввим файл cookie "  ) 
       res.cookie("access_token", accessToken, accessTokenOptions);
       res.cookie("refresh_token", refreshToken, refreshTokenOptions);
 
- // добавим в кэш и установим срок действия - 7 дней =604800   1день = 60*60*24=86400
+ // добавим в кэш и установим срок действия (и будет удалено)- 7 дней =604800  
+ // 1день = 60*60*24=86400
      await redis.set(user._id, JSON.stringify(user), "EX", 604800);
  
  //временно было res.status(200).json({  status: "success",  accessToken, });
- console.log("----------обноввим и продолжим"  )  
+ //console.log("----------обноввим и продолжим"  )  
  next();  //продолжим
  
   } catch (error: any) {

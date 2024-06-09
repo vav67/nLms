@@ -4,4 +4,4 @@ server/node_modules
 lmsclient/.env
 server/.env
 lmsclient/build
-server/build
+ 
