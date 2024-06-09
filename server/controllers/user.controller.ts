@@ -315,15 +315,17 @@ if (!session) {
       const accessToken = jwt.sign(
         { id: user._id },
         process.env.ACCESS_TOKEN as string,
-        {  expiresIn: "5m",  //через пять минут
-           }
+       // {  expiresIn: "5m",  //через пять минут
+          { expiresIn: "3d", 
+         }
       );
 
       const refreshToken = jwt.sign(
         { id: user._id },
         process.env.REFRESH_TOKEN as string,
-        { expiresIn: "3d", //через три дня
-           }
+      //  { expiresIn: "3d", //через три дня
+        { expiresIn: "6d", //через три дня
+          }
       );
 
       req.user = user;

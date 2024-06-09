@@ -15,7 +15,7 @@ export const isttt = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
        // соединение с бд
 //  await connectDB();
-//console.log("------промежуточное isttt /////// ")
+ //console.log("------промежуточное isttt /////// ")
    const access_token = req.cookies.access_token   as string;
  
  if (!access_token) {
@@ -23,8 +23,8 @@ export const isttt = CatchAsyncError(
     new ErrorHandler("No access_token this resource", 400)
   );
 }
-//console.log("------промежуточное isttt /////// access_token=", access_token)
-//console.log("------промежуточное isttt /// соль=", process.env.ACCESS_TOKEN as string )
+ //console.log("------промежуточное isttt /////// access_token=", access_token)
+ 
  try {
      // Создание тестового токена
 //+      const testPayload = { test: "11" };  // Объект в качестве полезной нагрузки
@@ -37,7 +37,7 @@ export const isttt = CatchAsyncError(
  const decoded = jwt.verify(access_token,  process.env.ACCESS_TOKEN as string)   as JwtPayload;
 
 
- //console.log(decoded, "------промежуточное isttt /////// ПРОШОЛ")
+// console.log(decoded, "------промежуточное isttt /////// ПРОШОЛ")
 
 
 // if (!decoded) {
@@ -55,7 +55,7 @@ export const isttt = CatchAsyncError(
 
   
 } catch (error) {
-//  console.error("------ промежуточное isttt ------ error verifying token", error);
+  console.error("------ОШИБКА промежуточное isttt ------ error verifying token", error);
   return next(new ErrorHandler("Failed to verify access token", 400));
 }
 
@@ -72,15 +72,19 @@ export const isAutheticated = CatchAsyncError(
     //const access_token = req.cookies.access_token as string;
     const access_token = req.cookies.access_token   as string;
 
-    if (!access_token) {
+ console.log("------промежуточное isAutheticated /////// access_token=", access_token)    
+  
+ if (!access_token) {
       return next(
         new ErrorHandler("No access_token this resource", 400)
       );
     }
 
-9//    const decoded = jwt.decode(access_token) as JwtPayload;
+ //    const decoded = jwt.decode(access_token) as JwtPayload;
   // декодируем , учитывая соль
   const decoded = jwt.verify(access_token,  process.env.ACCESS_TOKEN as string) as JwtPayload;
+
+  console.log("------промежуточное isAutheticated /////// декодируем =", decoded)  
 
     if (!decoded) {
       return next(new ErrorHandler("access token is not valid", 400));
@@ -89,6 +93,7 @@ export const isAutheticated = CatchAsyncError(
     // проверьте, истек ли срок действия токена доступа
     if (decoded.exp && decoded.exp <= Date.now() / 1000) {
       try {
+        console.log("------промежуточное isAutheticated  срок действия")    
         await updateAccessToken(req, res, next);
       } catch (error) {
         return next(error);
@@ -96,6 +101,7 @@ export const isAutheticated = CatchAsyncError(
     } else {
       const user = await redis.get(decoded.id);
 
+      console.log("----итак--промежуточное isAutheticated /////// user=", user)   
       if (!user) {
         return next(
           new ErrorHandler("Please login to access this resource", 400)
