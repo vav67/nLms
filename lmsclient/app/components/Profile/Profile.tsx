@@ -1,5 +1,8 @@
 "use client";
 import React, { FC, useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 import SideBarProfile from "./SideBarProfile"; //боковая панель
   import ProfileInfo from "./ProfileInfo";
   import ChangePassword from "./ChangePassword";
@@ -9,15 +12,29 @@ import SideBarProfile from "./SideBarProfile"; //боковая панель
       import { useGetUsersAllCoursesQuery } from "@/redux/features/courses/coursesApi";
 
   import { useTheme } from "next-themes" //сам тема
+import { styles } from "@/app/styles/style";
+import CustomModal from "@/app/utils/CustomModal";
+import ShopCreate from "../Shop/ShopCreate";
+import ShopVerification from "../Shop/ShopVerification";
+import ShopLogin from "../Shop/ShopLogin"; 
+ 
 
-type Props = {
-    user: any;
-    avatar: string | null;
-  };
+// type Props = {
+
+//     //  open: boolean;  //наш набор открыт
+//     // setOpen: (open: boolean) => void;
+//     user: any;
+//     avatar: string | null;
+
+ 
+//   };
   
-  const Profile: FC<Props> = ({ user }) => {
-   
-    //начальное состояния (переменные) 
+  //const Profile: FC<Props> = ({ setOpen, open, user  }) => {
+    const Profile: FC = ( ) => {
+      const { user } = useSelector((state: any) => state.auth);
+    
+      const router = useRouter();
+      //начальное состояния (переменные) 
    const { theme, setTheme } = useTheme() //сам для темы
 
     const [scroll, setScroll] = useState(false);
@@ -31,7 +48,8 @@ type Props = {
 // запрос о курсах  
 const { data, isLoading } = useGetUsersAllCoursesQuery(undefined, {});
 
-
+ 
+ 
 
      //вызов api запрос на выход пользователя 
      //если вы хотите предпринять дополнительные действия (например, отправить запрос на сервер) перед выходом пользователя из системы. Это может быть полезно, например, для очистки данных на стороне сервера перед завершением сеанса пользователя.
@@ -83,14 +101,30 @@ const { data, isLoading } = useGetUsersAllCoursesQuery(undefined, {});
       }
     }, [data]);
 
+ 
+//  магазин     
+  const Shopopen = () => {
+     router.push("/shopdashboardpage");
+}
 
+ 
     return (
         <div className="w-[85%] flex mx-auto">
+     
+     
         <div
           className={ `w-[60px] 800px:w-[310px] h-[450px] dark:bg-slate-900 bg-opacity-90 
         border bg-white border-[#ffffffld] rounded-[5px] shadow-sm mt-[80px] mb-[80px] 
           sticky ${ scroll ? "top-[120px]" : "top-[30px)" } left-[30px]`  }
         >
+ 
+
+<button className={`${styles.button} w-[55px] 800px:w-[300px] my-5 `}
+                      onClick = { Shopopen  }
+              >
+                    Shop Магазин 
+                 </button>
+
 
 <SideBarProfile
           user={user}
@@ -106,6 +140,8 @@ const { data, isLoading } = useGetUsersAllCoursesQuery(undefined, {});
           <ProfileInfo avatar={avatar} user={user} theme={theme} />
         </div>
       )}
+
+    
       {active === 2 && (
         <div className="w-full h-full bg-transparent mt-[80px]">
            <ChangePassword />  
@@ -157,9 +193,13 @@ const { data, isLoading } = useGetUsersAllCoursesQuery(undefined, {});
       )}
 {/* модальное окно сам ---------------------------*/}
 
-    </div>
+     </div>
  
  
+
+
+
+
     )
 }
 

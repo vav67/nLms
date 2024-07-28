@@ -175,7 +175,7 @@ export const editLayout = CatchAsyncError(
 export const getLayoutByType = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log('======СЕРВЕР ------баннер--getLayoutByType' )
+    //  console.log('======СЕРВЕР ------баннер--getLayoutByType' )
       const { type } = req.params  //- это параметром
    //   const { type } = req.body  // - это внутри тела
   
@@ -185,7 +185,7 @@ export const getLayoutByType = CatchAsyncError(
    //выбираем нужный тип
       const layout = await LayoutModel.findOne({ type });
  
-      console.log('баннер--getLayoutByType layout=', layout )
+     // console.log('баннер--getLayoutByType layout=', layout )
   res.status(201).json({ success: true,   layout,  });
 
     } catch (error: any) {

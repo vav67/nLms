@@ -44,7 +44,7 @@ const Courses = (props: Props) => {
               
                <CourseCard 
                    item={item} 
-                   key={index} 
+                   key={`courses-${index}`} 
                />
                 
            

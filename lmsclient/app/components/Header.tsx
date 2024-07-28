@@ -33,7 +33,7 @@ import React, { FC, useEffect, useState } from "react";
 
 //========================
 
-//const Header: FC<Props> = (props) => {   //  
+  
  const Header: FC<Props> = ({  activeItem, setOpen, open , route, setRoute  }) => {
   
   const { user } = useSelector((state: any) => state.auth  )
@@ -49,11 +49,11 @@ import React, { FC, useEffect, useState } from "react";
  
   const {data:userData, isLoading, refetch} = useLoadUserQuery(undefined, {});
   
-  console.log( '****** Header **  запрос юзера    userData=', userData)
+ // console.log( '****** Header **  запрос юзера    userData=', userData)
 
   const { data } = useSession(); //получаем данные ссессии(Google на GitHub )
   
- console.log( '**** Header ** сессия gogleвход data=', data)
+ //console.log( '**** Header ** сессия gogleвход data=', data)
 
 
    //получаем ответ от запроса социльной авториз-ции в таком виде
@@ -67,15 +67,7 @@ import React, { FC, useEffect, useState } from "react";
      // выходом пользователя из системы. Это может быть полезно, например, для очистки данных на стороне 
      //сервера перед завершением сеанса пользователя.
    const {} = useLogOutQuery(undefined, {skip: !logout ? true : false,   });
-
-
-  //получим данные
-// этого не нужно   const { user } = useSelector((state: any) => state.auth);
-
- // console.log( '+++++++++++++ Header user=', user)
-
-
- //запишем результат
+ 
  
   useEffect( () => {
   console.log( ' ================== Header  useEffect  ' ) 
@@ -100,32 +92,7 @@ import React, { FC, useEffect, useState } from "react";
       }
     }
  
-//----сам-----------------------------------------
-// if (user) {
-//   console.log( '!!!!!!!!! ЮЗЕР СУЩЕСТВУЕТ user=',  user)
-//               socialAuth({   //передаем данные для запроса в бд
-//                   email:  user?.email,
-//                     name:  user?.name,
-//                    avatar: user?.image,
-//                  });
-                 
-//               refetch();
-//              } 
-// --------------------------
-
-
-
-    
-  // if (data === null) {
-  //         //данные получены от useRegisterMutation    
-  //     if (isSuccess) { toast.success("Login Successfuly") }
-  //  }
-   
-  //  if (data === null && !isLoading && !userData){
-  //   console.log( '!!!!!!!!!! == ==== Header  useEffect ---инициирует запрос выхода через useLoadUserQuery  ' ) 
-  //     // так как хук useLoadUserQuery внутри ф-ции не работант , то записываем в переменную   
-  //      setLogout(true) // что инициирует запрос выхода через useLoadUserQuery
-  //      }
+ 
   }
  
 }, [data, userData, isLoading]);
@@ -178,6 +145,17 @@ import React, { FC, useEffect, useState } from "react";
                  ELearning
                </Link>
              </div>
+
+             <div>
+            <Link
+                href={"/pageproba"}
+                // https://tailwindcss.com/docs/text-color о цветах
+                className={`text-[25px] font-Poppins font-[500] text-orange-200 dark:text-white`}
+            >
+               жми  pageproba
+               </Link>
+             </div>
+
              <div className="flex items-center">
                <NavItems activeItem={activeItem} isMobile={false} />
            
@@ -186,6 +164,8 @@ import React, { FC, useEffect, useState } from "react";
             <div  className={` text-black dark:text-white`} //сам добавил из за зависания
             ><ThemeSwitcher   /></div>  
                
+               
+           
    
         {/* only for moblile  иконка меню */}
               <div className="800px:hidden">

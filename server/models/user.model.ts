@@ -14,6 +14,18 @@ export interface IUser extends Document {
     url: string;
   };
   role: string;
+ //--------------------------- 
+  addresses:Array<{
+      country: string;
+      city: string;
+      address1: string;
+      address2: string;
+      zipCode: string;
+     addressType: string;
+}>;
+shopseller: boolean;
+//----------------------------------
+
   // было    inVerified: boolean;
 // сам изменил
 isVerified: boolean; // Заменил isVerified на inVerified
@@ -61,6 +73,24 @@ const userSchema = new Schema<IUser>(
               url: String,
             },
     role:   {     type: String,   default: "user",    },
+//ДОБАВЛЯЮ
+addresses:[                
+{
+  country: {   type: String,   },
+  city:{       type: String,   },
+  address1:{   type: String,   },
+  address2:{   type: String,   },
+  zipCode:{    type: Number,   },
+ addressType:{ type: String,  },
+}
+],
+shopseller:{  //создан ли свой магазин
+  type: Boolean,
+     default: false,
+},
+
+//--------------------------------------------------
+
     isVerified: {    // если верифицирован , тогда покажем аккаунт
              type: Boolean,
              default: false,
@@ -141,6 +171,11 @@ userSchema.methods.comparePassword = async function (
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const userModel: Model<IUser> = mongoose.model("User", userSchema);
+ const userModel: Model<IUser> = mongoose.model("User", userSchema);
+// замена на
+// Используем проверку на наличие уже существующей модели
+//уберу робота const  User = mongoose.models.User || mongoose.model<IUser>("User", userSchema);
 
-export default userModel;
+ export default userModel;
+// замена на User
+//уберу робота export default User;

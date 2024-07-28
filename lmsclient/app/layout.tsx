@@ -78,10 +78,10 @@ export default function RootLayout({
  
   const Custom: FC<{ children: React.ReactNode }> = ({ children }) => {
     
-  // пока нет  const {   isLoading  } = useLoadUserQuery({});
+    const {   isLoading  } = useLoadUserQuery({});
   
    
-
+// пока сокет не запускаем
      useEffect(() => {
  
        socketId.on("connection", () => {}) //подключаемся
@@ -92,12 +92,12 @@ export default function RootLayout({
 
  // console.log(  '======== итак children='  )   
 
-    // return ( 
-    //   <>{isLoading ? <Loader /> : <div>{children}</div>}</> 
-    // )
     return ( 
-      <>{  <div>{children}</div>}</> 
+      <>{isLoading ? <Loader /> : <div>{children}</div>}</> 
     )
+    // return ( 
+    //   <>{  <div>{children}</div>}</> 
+    // )
   } 
 
  /**

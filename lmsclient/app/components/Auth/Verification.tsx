@@ -139,7 +139,7 @@ const handleChange = (value: string, index:any)  => {
 //----------------------------
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-50 ">
       <h1 className={`${styles.title}`}>Verify Your Account Подтвердите ваш аккоунт </h1>
       <br />
  <div className="w-full flex items-center justify-center mt-2">

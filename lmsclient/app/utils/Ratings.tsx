@@ -13,7 +13,7 @@ const Ratings: FC<Props> = ({ rating }) => {
     if (i <= rating) {
       stars.push(
         <AiFillStar
-          key={1}
+          key={i}   
           size={20}
           color="#f6b100"
           className="mr-2 cursor-pointer"
@@ -28,15 +28,15 @@ const Ratings: FC<Props> = ({ rating }) => {
           className="mr-2 cursor-pointer"
         />
       );
-    } else if (i === Math.ceil(rating) && !Number.isInteger(rating)) {
-      stars.push(
-        <BsStarHalf
-          key={i}
-          size={17}
-          color="#f6ba00"
-          className="mr-2 cursor-pointer"
-        />
-      );
+    // } else if (i === Math.ceil(rating) && !Number.isInteger(rating)) {
+    //   stars.push(
+    //     <BsStarHalf
+    //       key={i}
+    //       size={17}
+    //       color="#f6ba00"
+    //       className="mr-2 cursor-pointer"
+    //     />
+    //   );
     } else {
       stars.push(
         <AiOutlineStar

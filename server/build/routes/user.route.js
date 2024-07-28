@@ -25,6 +25,7 @@ userRouter.get("/refresh", user_controller_1.updateAccessToken);
 //  )
 //userRouter.get("/me", isAutheticated, getUserInfo);
 userRouter.post("/me", auth_1.isAutheticated, user_controller_1.getUserInfo); //сам меняю
+userRouter.post("/ttt", auth_1.isttt, user_controller_1.tttUser); //добавил для пробы июнь 2024 
 //----------------------------------------------
 userRouter.get("/get-cookie", user_controller_1.cookieAuth);
 userRouter.post("/social-auth", user_controller_1.socialAuth);

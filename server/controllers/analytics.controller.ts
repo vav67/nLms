@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import ErrorHandler from "../utils/ErrorHandler";
 import { CatchAsyncError } from "./../middleware/catchAsyncErrors";
 import { generateLast12MonthsDate } from "../utils/analytics.generator";
-import userModel from "../models/user.model";
+//import userModel from "../models/user.model";
+import User from "../models/user.model";
 import CourseModel from "../models/course.model";
 import OrderModel from "../models/orderModel";
 
@@ -11,7 +12,7 @@ export const getUsersAnalytics = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
 
- const users = await generateLast12MonthsDate(userModel);
+ const users = await generateLast12MonthsDate(User );
 
 res.status(200).json({ success: true,   users, });
 

@@ -65,6 +65,22 @@ const userSchema = new mongoose_1.Schema({
         url: String,
     },
     role: { type: String, default: "user", },
+    //ДОБАВЛЯЮ
+    addresses: [
+        {
+            country: { type: String, },
+            city: { type: String, },
+            address1: { type: String, },
+            address2: { type: String, },
+            zipCode: { type: Number, },
+            addressType: { type: String, },
+        }
+    ],
+    shopseller: {
+        type: Boolean,
+        default: false,
+    },
+    //--------------------------------------------------
     isVerified: {
         type: Boolean,
         default: false,
@@ -111,20 +127,29 @@ userSchema.pre("save", async function (next) {
  * действителен в течение 20 минут.
  */
 // sign access token
+// userSchema.methods.SignAccessToken = function () {
+//   return jwt.sign({ id: this._id }, process.env.ACCESS_TOKEN || "",
+//   {  expiresIn: "5m" });
+// };
 userSchema.methods.SignAccessToken = function () {
-    return jsonwebtoken_1.default.sign({ id: this._id }, process.env.ACCESS_TOKEN || "", {
-        expiresIn: "5m" //через пять минут 5m ставлю на 20m
-    });
+    return jsonwebtoken_1.default.sign({ id: this._id }, process.env.ACCESS_TOKEN, { expiresIn: "3d" });
 };
 // sign refresh token
+// userSchema.methods.SignRefreshToken = function () {
+//   return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN || "",
+//   { expiresIn: "3d" });
+// };
 userSchema.methods.SignRefreshToken = function () {
-    return jsonwebtoken_1.default.sign({ id: this._id }, process.env.REFRESH_TOKEN || "", {
-        expiresIn: "3d" //через три дня
-    });
+    return jsonwebtoken_1.default.sign({ id: this._id }, process.env.REFRESH_TOKEN, { expiresIn: "6d" });
 };
 // compare password
 userSchema.methods.comparePassword = async function (enteredPassword) {
     return await bcryptjs_1.default.compare(enteredPassword, this.password);
 };
 const userModel = mongoose_1.default.model("User", userSchema);
+// замена на
+// Используем проверку на наличие уже существующей модели
+//уберу робота const  User = mongoose.models.User || mongoose.model<IUser>("User", userSchema);
 exports.default = userModel;
+// замена на User
+//уберу робота export default User;

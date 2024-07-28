@@ -18,6 +18,7 @@ const notification_route_1 = __importDefault(require("./routes/notification.rout
 const analytics_route_1 = __importDefault(require("./routes/analytics.route"));
 const layout_route_1 = __importDefault(require("./routes/layout.route"));
 const express_rate_limit_1 = require("express-rate-limit"); //ограничение против спама
+const shop_route_1 = __importDefault(require("./routes/shop.route"));
 //const allowedOrigins = process.env.ORIGIN 
 //const allowedOrigins = ['http://localhost:3000' ];
 // app.use(cors({
@@ -36,7 +37,7 @@ const express_rate_limit_1 = require("express-rate-limit"); //ограничен
 // }));
 //origin - настраивает заголовок Access-Control-Allow-Origin. 
 //'http://localhost:3000', 
-exports.app.use((0, cors_1.default)({ origin: ['https://nlmserver.vercel.app/',
+exports.app.use((0, cors_1.default)({ origin: ['https://nlmserver.vercel.app/', 'http://localhost:3000',
         'https://nlmsclient.vercel.app', 'https://testclient-iota.vercel.app'],
     credentials: true, //это передает куки и др.
     methods: ['GET', 'POST', 'PUT', 'DELETE'] //сам добавил https://github.com/vercel/next.js/discussions/36487
@@ -55,14 +56,16 @@ const limiter = (0, express_rate_limit_1.rateLimit)({
 //router
 exports.app.use("/api/v1", user_route_1.default, course_route_1.default, order_route_1.default, notification_route_1.default, //уведомления
 analytics_route_1.default, //аналитика
-layout_route_1.default);
+layout_route_1.default, 
+//--------------------магазин  
+shop_route_1.default);
 //testing api - это тест API
 exports.app.get("/test", (req, res, next) => {
     const acc = req.cookies.access_token;
     //const acc = JSON.parse(req.cookies.get('access_token')?.value || 'no')
     res.status(200).json({
         success: true,
-        message: "API is working-22may- 14:00 acctoken=" + acc,
+        message: "API is working-23 июля - 12:25 acctoken=" + acc,
     });
 });
 //бывает что не правильно набрали адрес пути, отобразим ошибку

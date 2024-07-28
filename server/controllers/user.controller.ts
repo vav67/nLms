@@ -1,6 +1,6 @@
 require("dotenv").config(); //добавим  .env
 import { NextFunction, Request, Response } from "express";
-import userModel, { IUser } from "../models/user.model";
+import User, { IUser } from "../models/user.model";
  import ErrorHandler from "../utils/ErrorHandler";
 import { CatchAsyncError } from "./../middleware/catchAsyncErrors";
 import jwt, { JwtPayload, Secret } from "jsonwebtoken";
@@ -81,11 +81,11 @@ export const registrationUser = CatchAsyncError(
 
       // соединение с бд
  await connectDB();
-      const isEmailExist = await userModel.findOne({ email });
+      const isEmailExist = await User.findOne({ email });
    
    
       if (isEmailExist) {
-        return next(new ErrorHandler("Email already exit", 400));
+        return next(new ErrorHandler("user Email already exit существует", 400));
       }
 
       const user: IRegistrationBody = {
@@ -183,7 +183,7 @@ export const activateUser = CatchAsyncError(
   await connectDB();
 
    // проверка на существование   
-      const existUser = await userModel.findOne({ email });
+      const existUser = await User.findOne({ email });
 
       if (existUser) { //такой уже есть
         return next(new ErrorHandler("Email already exitst", 400));
@@ -192,7 +192,7 @@ export const activateUser = CatchAsyncError(
   //    console.log("создаем name=", name, "email=", email, 
   //    "password=", password)   
 //создаем в бд
-      const user = await userModel.create({
+      const user = await User.create({
         name,  email,   password,  });
 
     //    console.log(" СОЗДАНО")  
@@ -224,7 +224,7 @@ export const loginUser = CatchAsyncError(
    await connectDB();
    
    
-      const user = await userModel.findOne({ email }).select("+password");
+      const user = await User.findOne({ email }).select("+password");
 
       if (!user) {
         return next(new ErrorHandler("Invalid email or password", 400));
@@ -288,10 +288,7 @@ if (!refresh_token) {
  
 //---------------------------------------
     //  console.log("----------updateAccessToken refresh_token = ", refresh_token)   
-      const decoded = jwt.verify(
-        refresh_token,
-        process.env.REFRESH_TOKEN as string
-      ) as JwtPayload;
+  const decoded = jwt.verify( refresh_token, process.env.REFRESH_TOKEN as string  ) as JwtPayload;
       
 //не удалось обновить токен
       const message = "Could not refresh token";
@@ -383,12 +380,12 @@ export const socialAuth = CatchAsyncError(
         // соединение с бд
  await connectDB();
 
-      const user = await userModel.findOne({ email });
+      const user = await User.findOne({ email });
       
       if (!user) {
         console.log( 'социальная аутен-я socialAuth создаем социального юзера ')
 //тогда создаем социального юзера
-        const newUser = await userModel.create({ email, name, avatar });
+        const newUser = await User.create({ email, name, avatar });
         sendToken(newUser, 200, res);
       } else {
         console.log( 'социальная аутен-я socialAuth для  юзера sendToken ')
@@ -435,7 +432,7 @@ export const updateUserInfo = CatchAsyncError(
  await connectDB();
 
       //находим пользователя
-      const user = await userModel.findById(userId);
+      const user = await User.findById(userId);
 
      //- это ненужно
       // if(email && user){
@@ -482,7 +479,7 @@ export const updateUserPassword = CatchAsyncError(
   // соединение с бд
   await connectDB();
 
-      const user = await userModel.findById(req.user?._id).select("+password");
+      const user = await User.findById(req.user?._id).select("+password");
 
       if (user?.password === undefined) {
         return next(new ErrorHandler("Invalid user", 400));
@@ -528,7 +525,7 @@ export const updateProfilePicture = CatchAsyncError(
   await connectDB();
 
       // найдем юзера
-const user = await userModel.findById(userId).select("+password");
+const user = await User.findById(userId).select("+password");
 
       if (avatar && user) {
    //если есть юзер и картинка, то картинку надо удалить     
@@ -601,7 +598,7 @@ export const updateUserRole = CatchAsyncError(
         // соединение с бд
  await connectDB();
 
-    const isUserExist = await userModel.findOne({ email });
+    const isUserExist = await User.findOne({ email });
 
    if (isUserExist) {
     const id = isUserExist._id;
@@ -629,7 +626,7 @@ export const deleteUser = CatchAsyncError(
   await connectDB();
 
 //ищем пользователя
-      const user = await userModel.findById(id);
+      const user = await User.findById(id);
 
       if (!user) {
         return next(new ErrorHandler("User not found", 404));

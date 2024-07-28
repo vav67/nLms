@@ -7,6 +7,7 @@ exports.getOrdersAnalytics = exports.getCoursesAnalytics = exports.getUsersAnaly
 const ErrorHandler_1 = __importDefault(require("../utils/ErrorHandler"));
 const catchAsyncErrors_1 = require("./../middleware/catchAsyncErrors");
 const analytics_generator_1 = require("../utils/analytics.generator");
+//import userModel from "../models/user.model";
 const user_model_1 = __importDefault(require("../models/user.model"));
 const course_model_1 = __importDefault(require("../models/course.model"));
 const orderModel_1 = __importDefault(require("../models/orderModel"));

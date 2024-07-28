@@ -18,14 +18,10 @@ export const isttt = CatchAsyncError(
  //console.log("------промежуточное isttt /////// ")
    const access_token = req.cookies.access_token   as string;
  
- if (!access_token) {
-  return next(
-    new ErrorHandler("No access_token this resource", 400)
-  );
-}
+ if (!access_token) { return next( new ErrorHandler("No access_token this resource", 400) )}
  //console.log("------промежуточное isttt /////// access_token=", access_token)
  
- try {
+ 
      // Создание тестового токена
 //+      const testPayload = { test: "11" };  // Объект в качестве полезной нагрузки
 //+  const zz = jwt.sign(testPayload,  process.env.ACCESS_TOKEN || "", {
@@ -33,34 +29,52 @@ export const isttt = CatchAsyncError(
 //+  console.log("------промежуточное isttt == zz=", zz)
 //+  const decoded = jwt.verify(zz,  process.env.ACCESS_TOKEN as string) // as JwtPayload;
 
-
+try {
  const decoded = jwt.verify(access_token,  process.env.ACCESS_TOKEN as string)   as JwtPayload;
 
 
 // console.log(decoded, "------промежуточное isttt /////// ПРОШОЛ")
+     // Проверка, истек ли срок действия токена доступа
+     if (decoded.exp && decoded.exp <= Date.now() / 1000) {
+      console.log("------ промежуточное isAuthenticated ------ срок действия истек");
 
+      await updateAccessToken(req, res, next);
 
-// if (!decoded) {
-//   return next(new ErrorHandler("access token is not valid", 400));
-// }
+    }
+     else {
+        // Получаем пользователя из Redis по id из токена
+        const user = await redis.get(decoded.id);
 
+    if (!user) { return next( new ErrorHandler("Please login to access this resource", 400) )     }
 
+        req.user = JSON.parse(user);
+     next();
+          }
 
-
- next();
-//  res.status(200).json({
-//   success: true,
-//   message: "API  tttUser   is working сегодня==="+ access_token,
-// });
-
-  
 } catch (error) {
-  console.error("------ОШИБКА промежуточное isttt ------ error verifying token", error);
-  return next(new ErrorHandler("Failed to verify access token", 400));
+  console.error("------ промежуточное isAuthenticated ------ ошибка при проверке токена", error);
+
+  // Обработка различных ошибок
+  if (error instanceof jwt.TokenExpiredError) {
+    console.log("------ промежуточное isAuthenticated ------ срок действия истек");
+    // Обновляем токен, если он истек     
+   // return next(new ErrorHandler("Access token expired", 401));
+// заменим на 
+         await updateAccessToken(req, res, next);
+  } else 
+      if ( error instanceof jwt.JsonWebTokenError) {
+          return next(new ErrorHandler("Access token is invalid", 401));
+  } else {
+          return next(new ErrorHandler("Failed to verify access token", 400));
+  }
 }
 
-  }
-);
+
+});
+  
+ 
+
+ 
 
 // authenticated user
 export const isAutheticated = CatchAsyncError(
@@ -72,7 +86,7 @@ export const isAutheticated = CatchAsyncError(
     //const access_token = req.cookies.access_token as string;
     const access_token = req.cookies.access_token   as string;
 
- console.log("------промежуточное isAutheticated /////// access_token=", access_token)    
+ //console.log("------промежуточное isAutheticated /////// access_token=", access_token)    
   
  if (!access_token) {
       return next(
@@ -84,7 +98,7 @@ export const isAutheticated = CatchAsyncError(
   // декодируем , учитывая соль
   const decoded = jwt.verify(access_token,  process.env.ACCESS_TOKEN as string) as JwtPayload;
 
-  console.log("------промежуточное isAutheticated /////// декодируем =", decoded)  
+  //console.log("------промежуточное isAutheticated /////// декодируем =", decoded)  
 
     if (!decoded) {
       return next(new ErrorHandler("access token is not valid", 400));
@@ -93,18 +107,20 @@ export const isAutheticated = CatchAsyncError(
     // проверьте, истек ли срок действия токена доступа
     if (decoded.exp && decoded.exp <= Date.now() / 1000) {
       try {
-        console.log("------промежуточное isAutheticated  срок действия")    
+        //console.log("------промежуточное isAutheticated  срок действия")    
+        
         await updateAccessToken(req, res, next);
+
       } catch (error) {
         return next(error);
       }
     } else {
-      const user = await redis.get(decoded.id);
+    //берем из redis  
+           const user = await redis.get(decoded.id);
 
-      console.log("----итак--промежуточное isAutheticated /////// user=", user)   
-      if (!user) {
+      if (!user) { //в redis jncencndetn
         return next(
-          new ErrorHandler("Please login to access this resource", 400)
+          new ErrorHandler("Please redis login to access this resource", 400)
         );
       }
 
@@ -114,6 +130,7 @@ export const isAutheticated = CatchAsyncError(
     }
   }
 );
+
 
 // validate user role
 export const authorizeRoles = (...roles: string[]) => {

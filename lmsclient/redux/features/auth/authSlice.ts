@@ -25,6 +25,9 @@ const authSlice = createSlice({
     //        state.token = action.payload.accessToken;
     //         state.user = action.payload.user
     //    },
+
+    //-------- ВХОД ----------------------------------------
+
 userLoggedIn: ( state, action: PayloadAction<{ accessToken: string; user: string }>
     ) => {
         // if ( action.payload.user === undefined   && action.payload.accessToken === undefined  )

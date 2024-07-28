@@ -3,14 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUserRoleService = exports.getAllUsersService = exports.getUserById = void 0;
+exports.updateUserShopService = exports.updateUserRoleService = exports.getAllUsersService = exports.getUserById = void 0;
 const redis_1 = require("../utils/redis");
 const user_model_1 = __importDefault(require("../models/user.model"));
 const db_1 = __importDefault(require("../utils/db"));
 // получение пользователя по идентификатору
 // из бд
 //зам-м  export const getUserById = async (id: string, res: Response ) => {
-//зам-м    const user = await userModel.findById(id)
+//зам-м    const user = await User.findById(id)
 //зам-м       res.status(201).json({
 //зам-м         success: true,
 //зам-м         user,
@@ -47,3 +47,18 @@ const updateUserRoleService = async (res, id, role) => {
     res.status(201).json({ success: true, user, });
 };
 exports.updateUserRoleService = updateUserRoleService;
+//добавим фиксацию магазина
+//shopseller:{  //создан ли свой магазин
+const updateUserShopService = async (res, id) => {
+    const shopseller = true;
+    // соединение с бд
+    await (0, db_1.default)();
+    //  console.log( " попытка обновить вызываем правило обновлений")
+    // находим пользователя по id  и по роли обновит правило
+    const user = await user_model_1.default.findByIdAndUpdate(id, { shopseller }, { new: true });
+    // изменения юзера запишем
+    await redis_1.redis.set(id, JSON.stringify(user)); // запишем в кэш
+    // нет так как создается магазин res.status(201).json({ success: true,  user,  });
+    res.status(201).json({ success: true });
+};
+exports.updateUserShopService = updateUserShopService;

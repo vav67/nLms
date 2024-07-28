@@ -154,14 +154,14 @@ exports.editLayout = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, ne
 //get layout bu type  получим наш макет
 exports.getLayoutByType = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
-        console.log('======СЕРВЕР ------баннер--getLayoutByType');
+        //  console.log('======СЕРВЕР ------баннер--getLayoutByType' )
         const { type } = req.params; //- это параметром
         //   const { type } = req.body  // - это внутри тела
         // соединение с бд
         await (0, db_1.default)();
         //выбираем нужный тип
         const layout = await layout_model_1.default.findOne({ type });
-        console.log('баннер--getLayoutByType layout=', layout);
+        // console.log('баннер--getLayoutByType layout=', layout )
         res.status(201).json({ success: true, layout, });
     }
     catch (error) {

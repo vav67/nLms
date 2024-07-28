@@ -4,6 +4,7 @@ import { IUser } from "../models/user.model";
 import { redis } from "./redis";
 
 import jwt, { JwtPayload } from "jsonwebtoken"; //проверка
+import { IShop } from "../models/shop.model";
 
 
 interface ITokenOptions {
@@ -75,8 +76,46 @@ export const sendToken = (user: IUser, statusCode: number, res: Response) => {
   res.cookie("access_token", accessToken, accessTokenOptions);
   res.cookie("refresh_token", refreshToken, refreshTokenOptions);
 
-  // console.log( '---sendToken отправим-true  accessToken=',accessToken, 
-  // '  user= ', user)
+    console.log( '---sendToken отправим-true  accessToken=',accessToken, 
+         '  user= ', user)
 
   res.status(statusCode).json({ success: true,  user, accessToken,  });
 };
+
+
+
+
+
+
+
+export const sendShopToken = (seller: IShop, statusCode: number, res: Response) => {
+
+ // console.log( '--выполнение  sendToken=',  statusCode )
+
+  //токен доступа - экземпляр модели shopModel
+  const accessTokenShop = seller.ShopAccessToken();
+//токен обновления
+  const refreshTokenShop = seller.ShopRefreshToken();
+
+    // console.log('=== sendToken декодируем =', decoded) 
+
+  // upload session to redis загрузить сеанс в Redis
+  //redis.set(user._id, JSON.stringify(user) as any);
+// с префиксом для различия
+redis.set(`shop:${seller._id}`, JSON.stringify(seller) as any);
+
+
+  // 06-41-12 закоментировали тк производство не SEC 
+
+  res.cookie("access_shoptoken", accessTokenShop, accessTokenOptions);
+  res.cookie("refresh_shoptoken", refreshTokenShop, refreshTokenOptions);
+
+  // console.log( '---sendToken отправим-true  accessToken=',accessToken, 
+  // '  user= ', user)
+
+  // здесь отправим user - экземпляр модели shopModel
+  res.status(statusCode).json({ success: true,  seller, accessTokenShop,  });
+
+
+
+}

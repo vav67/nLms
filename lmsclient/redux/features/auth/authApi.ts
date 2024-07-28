@@ -17,6 +17,8 @@ export const authApi = apiSlice.injectEndpoints({
 // ниже описываються методы ( query (GET запрос)- получает данные от сервера
 //                            mutation ( POST, PUT запрос  )-чтобы данные изменять        )
         // endpoints here // здесь конечные точки
+
+//-------------  Регистрация ------------------------------------------------------------------------------        
     register: builder.mutation<RegistrationResponse, RegistrationData>({
    query: (data) => ({
             url: "registration", // это добавиться к базовому эндпоинту
@@ -48,6 +50,8 @@ userRegistration({ token: result.data.activationToken, })
       },
     }),
 
+
+//--------------Активация--------------------------------------------------    
 //следующий эндпоинт  - чанк
 activation: builder.mutation({
   query: ({ activation_token, activation_code }) => ({
@@ -60,7 +64,7 @@ activation: builder.mutation({
   }),
 }),
 
-
+//------------- вход --------------------------------------------------------------
 //следующий эндпоинт  - чанк
 login: builder.mutation({
   query: ({ email, password }) => ({
@@ -97,11 +101,12 @@ credentials: "include" as const,
         })
       );
     } catch (error: any) {
-      console.log("ошq=",error);
+      console.log("login ошибка=",error);
     }
   },
 }),
 
+//------------вход социальных сетей ----------------------------------------------------------------------
 //функция социальных сетей
     socialAuth: builder.mutation({
       query: ({ email, name, avatar }) => ({

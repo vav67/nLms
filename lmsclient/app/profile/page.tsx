@@ -10,10 +10,13 @@ import Header from "../components/Header";
 //аватар  
   import avatar from "../../public/next.svg";
 import Footer from "../components/Footer";
+ 
 
 type Props = {};
 
 const page: FC<Props> = (props) => {
+console.log( 'profile пропсы =', props)
+
   const { user } = useSelector((state: any) => state.auth);
 
    //начальное состояния (переменные)  
@@ -32,7 +35,8 @@ const page: FC<Props> = (props) => {
           title={`${user?.name} profile - Elearning`}
           description="ELearning is a platform for students to learn and get help from teachers"
           keywords="Prograaming, MERN, Redux, Machine Learning"
-        /> 
+        />
+
           <Header 
           //передаем начальное состояние
           open={open}
@@ -42,7 +46,11 @@ const page: FC<Props> = (props) => {
           route={route}
         />  
   
-      <Profile user={user} avatar={avatar} /> 
+  <p>страница профиля---------------------------</p>
+
+      {/* <Profile  open={open} setOpen={setOpen} user={user} avatar={avatar} />  */}
+      <Profile     /> 
+
       <Footer />
 
        </Protected>  

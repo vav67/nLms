@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { CatchAsyncError } from "../middleware/catchAsyncErrors";
 import ErrorHandler from "../utils/ErrorHandler";
 import   { IOrder } from "../models/orderModel";
-import userModel from "../models/user.model";
+import User from "../models/user.model";
 import CourseModel from "../models/course.model";
   import path from "path";
   import ejs from "ejs";
@@ -46,7 +46,7 @@ if (payment_info) {
   await connectDB();
 
 //найдем нашего пользователя
-      const user = await userModel.findById(req.user?._id);
+      const user = await User.findById(req.user?._id);
 console.log( '=======================',user?.courses,'----курс user=', user?.name,"поста= ", user?.email)
 
 // ищем о покупке пользователем этого курса в его купленных курсов

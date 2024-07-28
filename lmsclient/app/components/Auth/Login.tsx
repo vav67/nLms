@@ -68,9 +68,14 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch  }) => {
   //=================
 
   return (
-    <div className="w-full">
+    
+     
+        <div className="min-h-screen bg-gray-50 ">
+
+
        <h1 className={`${styles.title}`}>Login with ELearning</h1>{" "} 
-      <form onSubmit={handleSubmit}>
+    
+     <form onSubmit={handleSubmit}>
         <label className={`${styles.label}`} htmlFor="email">
           Enter your Email
         </label>
@@ -153,6 +158,8 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch  }) => {
       </form>
       <br />
     </div>
+    
+     
   );
 };
 

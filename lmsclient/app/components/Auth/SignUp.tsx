@@ -75,8 +75,11 @@ const Signup: FC<Props> = ({ setRoute }) => {
   //========================
 
   return (
-    <div className="w-full">
+    <div className="min-h-screen bg-gray-50  ">
+ 
       <h1 className={`${styles.title}`}>Join to ELearning</h1>{" "}
+     
+      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className={`${styles.label}`} htmlFor="name">
@@ -171,9 +174,12 @@ const Signup: FC<Props> = ({ setRoute }) => {
             Sign in
           </span>
         </h5>
+    
       </form>
+      </div>
       <br />
     </div>
+   
   );
 };
 

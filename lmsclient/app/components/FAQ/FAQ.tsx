@@ -32,8 +32,8 @@ const FAQ = (props: Props) => {
         </h1>
         <div className="mt-12">
           <dl className="space-y-8">
-            {questions?.map((q) => (
-              <div key={q.id}
+            {questions?.map((q,ii) => (
+              <div key={ `faq-${ii}`  }
               className={`${
                 q._id !== questions[0]?._id && "border-t"
               } border-gray-200 pt-6`}

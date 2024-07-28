@@ -111,7 +111,7 @@ refreshToken: builder.query({
 loadUser: builder.query({
   query: (data) => ({
     url: "me",
-    method: "GET",
+    method: "POST", ////////////////////////изменено
     credentials: "include" as const,
   }),
   async onQueryStarted(arg, { queryFulfilled, dispatch }) {

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUserRole = exports.getAllUsers = exports.updateProfilePicture = exports.updateUserPassword = exports.updateUserInfo = exports.cookieAuth = exports.socialAuth = exports.getUserInfo = exports.updateAccessToken = exports.logoutUser = exports.loginUser = exports.activateUser = exports.createActivationToken = exports.registrationUser = void 0;
+exports.deleteUser = exports.updateUserRole = exports.getAllUsers = exports.updateProfilePicture = exports.updateUserPassword = exports.updateUserInfo = exports.cookieAuth = exports.socialAuth = exports.getUserInfo = exports.updateAccessToken = exports.logoutUser = exports.loginUser = exports.activateUser = exports.createActivationToken = exports.registrationUser = exports.tttUser = void 0;
 require("dotenv").config(); //добавим  .env
 const user_model_1 = __importDefault(require("../models/user.model"));
 const ErrorHandler_1 = __importDefault(require("../utils/ErrorHandler"));
@@ -17,6 +17,28 @@ const db_1 = __importDefault(require("../utils/db"));
 const redis_1 = require("../utils/redis");
 const user_service_1 = require("../services/user.service");
 const cloudinary_1 = __importDefault(require("cloudinary"));
+//========tttUser=============================
+exports.tttUser = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
+    try {
+        console.log("---------контроллер- /////// ");
+        const cook = req.cookies.access_token;
+        //////////    const userId = req.user?._id;
+        //         if (userId) {
+        ///////////      getUserById(userId, res);
+        // } else {
+        //     return next(new ErrorHandler("User ID is not defined", 400));
+        // }
+        //console.log("@@@@@@@@@ tttUser=", req)
+        res.status(200).json({
+            success: true,
+            message: "API  tttUser   is working  09июня  ===" + cook,
+        });
+    }
+    catch (error) {
+        return next(new ErrorHandler_1.default(error.message, 411));
+    }
+});
+//==========================================
 //----------------- регистрация пользователя
 exports.registrationUser = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     // console.log("req.body=", req.body)
@@ -26,13 +48,14 @@ exports.registrationUser = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, r
         await (0, db_1.default)();
         const isEmailExist = await user_model_1.default.findOne({ email });
         if (isEmailExist) {
-            return next(new ErrorHandler_1.default("Email already exit", 400));
+            return next(new ErrorHandler_1.default("user Email already exit существует", 400));
         }
         const user = {
             name,
             email,
             password,
         };
+        //???  const activationToken = (0, exports.createActivationToken)(user); на исходнике 06-41-55
         const activationToken = (0, exports.createActivationToken)(user);
         //  console.log("activationToken=", activationToken)
         //код активации
@@ -176,19 +199,24 @@ exports.updateAccessToken = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, 
         const user = JSON.parse(session);
         // console.log("----------updateAccessToken user = ", user )       
         //создадим токен доступа
-        const accessToken = jsonwebtoken_1.default.sign({ id: user._id }, process.env.ACCESS_TOKEN, { expiresIn: "5m", //через пять минут
+        const accessToken = jsonwebtoken_1.default.sign({ id: user._id }, process.env.ACCESS_TOKEN, 
+        // {  expiresIn: "5m",  //через пять минут
+        { expiresIn: "3d",
         });
-        const refreshToken = jsonwebtoken_1.default.sign({ id: user._id }, process.env.REFRESH_TOKEN, { expiresIn: "3d", //через три дня
+        const refreshToken = jsonwebtoken_1.default.sign({ id: user._id }, process.env.REFRESH_TOKEN, 
+        //  { expiresIn: "3d", //через три дня
+        { expiresIn: "6d", //через три дня
         });
         req.user = user;
         //обноввим файл cookie
-        console.log("----------обноввим файл cookie ");
+        //console.log("----------обноввим файл cookie "  ) 
         res.cookie("access_token", accessToken, jwt_1.accessTokenOptions);
         res.cookie("refresh_token", refreshToken, jwt_1.refreshTokenOptions);
-        // добавим в кэш и установим срок действия - 7 дней =604800   1день = 60*60*24=86400
+        // добавим в кэш и установим срок действия (и будет удалено)- 7 дней =604800  
+        // 1день = 60*60*24=86400
         await redis_1.redis.set(user._id, JSON.stringify(user), "EX", 604800);
         //временно было res.status(200).json({  status: "success",  accessToken, });
-        console.log("----------обноввим и продолжим");
+        //console.log("----------обноввим и продолжим"  )  
         next(); //продолжим
     }
     catch (error) {
