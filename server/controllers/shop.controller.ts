@@ -21,6 +21,7 @@ import {
   sendShopToken,
                  } from "../utils/jwt";
 import { getShopById } from "../services/shop.service";
+import cloudinary from "cloudinary";
 
 
  // update access token - обновление токена доступа рефреш 
@@ -29,7 +30,7 @@ import { getShopById } from "../services/shop.service";
        
     try {
    //токен   
-  console.log("--- updateAccessShopToken = ", req )
+  console.log("@@ --- updateAccessShopToken = ", req.cookies )
       const refresh_shoptoken = req.cookies.refresh_shoptoken as string;
 //---добавлю предложение робота
 // Чтобы избежать этой ошибки, перед извлечением refresh token из куки, вы должны
@@ -84,7 +85,7 @@ if (!sessionshopredis) {
 
       req.seller  = seller;
 //обноввим файл cookie
- //console.log("----------обноввим файл cookie "  ) 
+ console.log("-@@---------обноввим файл cookie "  ) 
       res.cookie("access_shoptoken", accessTokenShop, accessTokenOptions);
       res.cookie("refresh_shoptoken", refreshTokenShop, refreshTokenOptions);
 
@@ -93,7 +94,7 @@ if (!sessionshopredis) {
      await redis.set(`shop:${seller._id}`, JSON.stringify(seller), "EX", 604800);
  
  //временно было res.status(200).json({  status: "success",  accessToken, });
- //console.log("----------обноввим и продолжим"  )  
+ console.log("-@@   ---------обноввим и продолжим accessTokenShop=",accessTokenShop  )  
  next();  //продолжим
  
   } catch (error: any) {
@@ -137,10 +138,6 @@ export const registrationShop = CatchAsyncError(
         const { name, email, password, address, phoneNumber, zipCode } = req.body;
        // const avatar = req.file;
     
-        
-      
-
-
       // соединение с бд
       await connectDB();
       const sellerEmail = await shopModel.findOne({ email });
@@ -388,20 +385,213 @@ await connectDB();
 //----------------------------------------
 
   //Загрузка юзера-Load user
-//get user info  
+//get user info 
+
 export const sellerInfo = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
    console.log("---------контроллер-/meseller--sellerInfo ")
-
     const shopId = req.seller?._id;
- 
         getShopById(shopId, res);
-
- 
- 
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 411));
     }
   }
 );
+
+
+interface IUpdateProfilePicture {
+  avatar: string
+  }
+ 
+ // обновление изображения профиля
+ export const updateShopProfilePicture = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+  // console.log( '=========== updateProfilePicture  обновление изображения профиля req=', req )   
+      const { avatar } = req.body as IUpdateProfilePicture;
+
+      
+      const shopId = req.seller?._id;
+
+      // соединение с бд
+  await connectDB();
+
+      // найдем юзера
+const shop = await shopModel.findById(shopId ).select("+password");
+
+      if (avatar && shop) {
+   //если есть юзер и картинка, то картинку надо удалить     
+        //if user have one avatar then call this if
+        if (shop?.avatar?.public_id) {
+//удаляем старое изображение    
+//console.log( 'updateProfilePictur удаляем=', user?.avatar?.public_id)      
+          //first delete the old image
+await cloudinary.v2.uploader.destroy(shop?.avatar?.public_id)
+//загружаем новое изображение 
+const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+            folder: "avatars",
+            width: 150,
+  //добавил сам   
+         overwrite: true, // Перезаписываем существующее изображение       
+    // // Устанавливаем public_id равным userId          
+          });
+         shop.avatar = {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
+          };
+} else {  // тогда нет изображения, создаем новое
+          console.log( 'updateProfilePictur загружаем новое' )        
+      // или загружаем новое изображение    
+          const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+            folder: "avatars",
+            width: 150,
+          });
+        //  console.log( '----------updateProfilePictur  bbb'  ) 
+
+
+          shop.avatar = {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
+          };
+        }
+      }
+      await shop?.save();
+
+      //    console.log( '--АВАТАР--------updateProfilePictur ЗАПИСАЛИ shop=', shop  ) 
+   await redis.set(`shop:${shopId}`, JSON.stringify( shop));
+   
+  // наверное нужно с редиса удалить    
+ // await redis.del(`shop:${shopId}`  )   //также удалим в кеше redi
+
+      res.status(200).json({
+        success: true,
+        shop,  ///  ?? только аватар здесь
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+//-----------------------------------------
+//update user info
+interface IUptadeUserInfo {
+  name: string;
+  description:string;
+  address:string;
+  phoneNumber: number; 
+  zipCode: number;
+}
+//обновляем информацию о пользователе
+export const updateShopInfo  = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+  //    console.log( '@@--------updateShopInfo req.body=', req  )      
+      const {   name, description, address,
+        phoneNumber, zipCode  } = req.body  // as IUptadeUserInfo;
+    
+        const shopId = req.seller?._id;
+        console.log( '@@--------updateShopInfo req.body= shopId=', req.seller?._id )      
+     // соединение с бд
+ await connectDB();
+
+      //находим пользователя
+      const shop = await shopModel.findById(shopId);
+
+
+      if (!shop) {
+        return next(new ErrorHandler("Invalid shop", 400));
+      }
+ 
+
+     //- это ненужно
+      // if(email && user){
+      // const isEmailExist = await userModel.findOne({email})
+      // if (isEmailExist){
+      //    return next(new ErrorHandler("Email already exist", 400))
+      //   }
+      //    user.email = email 
+      // }
+
+      if ( shop) {
+        shop.name         = name
+        shop.description  = description
+        shop.address      = address
+        shop.phoneNumber  = phoneNumber
+        shop.zipCode      = zipCode 
+        
+        }//присваиваеи новое  
+   
+        console.log( '@@--------updateShopInfo записываем shop=', shop  )       
+      await shop?.save(); //сохраним
+
+  // наверное нужно с редиса удалить    
+   //  await redis.del(`shop:${shopId}`  )   //также удалим в кеше redi
+  //запишем обновленную в редис
+   await redis.set(`shop:${shop._id}`, JSON.stringify( shop));// запишем в кэш
+
+
+  console.log( '@@--------updateShopInfo результ ок'   )     
+ res.status(200).json({ success: true, shop, }) //ответ shop - не полный
+
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+
+// // update user password
+// interface IUptadeUserPassword {
+//   oldPassword: string;
+//   newPassword: string;
+// }
+// //-------обновление пароля пользователя
+// export const updateUserPassword = CatchAsyncError(
+//   async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//       //получим старый и новый пароли
+//       const { oldPassword, newPassword } = req.body as IUptadeUserPassword;
+
+//       if (!oldPassword || !newPassword) { //если нет паролей
+//         return next(
+//           new ErrorHandler("Please enter old password and new password", 400)
+//         );
+//       }
+
+//   // соединение с бд
+//   await connectDB();
+
+//       const user = await User.findById(req.user?._id).select("+password");
+
+//       if (user?.password === undefined) {
+//         return next(new ErrorHandler("Invalid user", 400));
+//       }
+ 
+//   // проверка старого пароля
+//       const isPsswordMatch = await user?.comparePassword(oldPassword);
+
+//       if (!isPsswordMatch) {
+//         return next(new ErrorHandler("Invalid old password", 400));
+//       }
+// //присваиваем
+//       user.password = newPassword;
+// //обновляем пароль
+//       await user.save();
+
+//       await redis.set(req.user?._id, JSON.stringify(user));
+
+//       res.status(200).json({
+//         success: true,
+//         user,
+//       });
+//     } catch (error: any) {
+//       return next(new ErrorHandler(error.message, 400));
+//     }
+//   }
+// );
+
+// interface IUpdateProfilePicture {
+// avatar: string
+// }

@@ -7,6 +7,7 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/components/**/*.{js,ts,jsx,tsx,mdx}", //сам добавил было зависание вначале
     "./app/utils/**/*.{js,ts,jsx,tsx,mdx}", //сам добавил было зависание вначале
+    "./app/shop/**/*.{js,ts,jsx,tsx,mdx}", //еще добавил
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   darkMode: ["class"], //подключили темную тему

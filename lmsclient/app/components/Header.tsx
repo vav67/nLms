@@ -29,75 +29,40 @@ import React, { FC, useEffect, useState } from "react";
   activeItem: number; //активный
    route: string;
     setRoute: (route: string) => void;
+       
+    profilepage: boolean;
+ userData: any;
+ refetch?:any;
   };
 
 //========================
 
   
- const Header: FC<Props> = ({  activeItem, setOpen, open , route, setRoute  }) => {
-  
-  const { user } = useSelector((state: any) => state.auth  )
-
-  console.log( '****** Header *useSelector*     user=', user)
-
-   const [active, setActive] = useState(false);
+ const Header: FC<Props> = ({  activeItem, setOpen, open ,
+   route, setRoute ,  profilepage, userData, refetch }) => {
+ // console.log( 'Header======= ' );
+    const [active, setActive] = useState(false);
    const [openSidebar, setOpenSidebar] = useState(false);
  
- //вызов api запрос  
- //undefined или если вы хотите предпринять дополнительные действия (например, отправить запрос на сервер) 
- // const {} = useLoadUserQuery(undefined, { skip: !logout ? true : false, });
- 
-  const {data:userData, isLoading, refetch} = useLoadUserQuery(undefined, {});
-  
- // console.log( '****** Header **  запрос юзера    userData=', userData)
-
-  const { data } = useSession(); //получаем данные ссессии(Google на GitHub )
-  
- //console.log( '**** Header ** сессия gogleвход data=', data)
+    const [logout, setLogout] = useState(false);
 
 
-   //получаем ответ от запроса социльной авториз-ции в таком виде
-   //  console.log( '---sendToken отправим-true  accessToken=',accessToken, 
-   // '  user= ', user)
-   const [  socialAuth, { isSuccess, error  }] = useSocialAuthMutation();
 
-   const [logout, setLogout] = useState(false);
-   //вызов api запрос на выход пользователя 
-     //если вы хотите предпринять дополнительные действия (например, отправить запрос на сервер) перед
-     // выходом пользователя из системы. Это может быть полезно, например, для очистки данных на стороне 
-     //сервера перед завершением сеанса пользователя.
-   const {} = useLogOutQuery(undefined, {skip: !logout ? true : false,   });
+  //  const { data } = useSession();
+//    //вызов api запрос на выход пользователя 
+//      //если вы хотите предпринять дополнительные действия (например, отправить запрос на сервер) перед
+//      // выходом пользователя из системы. Это может быть полезно, например, для очистки данных на стороне 
+//      //сервера перед завершением сеанса пользователя.
+  //  const {} = useLogOutQuery(undefined, {skip: !logout ? true : false,   });
  
- 
-  useEffect( () => {
-  console.log( ' ================== Header  useEffect  ' ) 
 
-  
-  if (!isLoading) { //загрузка окончена
- // console.log( '!!!!!!!!!! Header  useEffect приходит дата от запроса data=', data ,  ' или user=', userData) 
-   
- if (!user)
-{
-      if (!userData) { //если нет входа просто пользователя
-      if (data) { // есть вход из соц груп ( гугл, ....  )
-       console.log( '!!!!!!!!!! Header  useEffect приходит дата от запроса data=', data ) 
 
-       socialAuth({   //передаем данные для запроса в бд из соц группы
-         email: data?.user?.email,
-        name: data?.user?.name,
-       avatar: data?.user?.image,
-        });
-      // refetch(); //повторяем загрузку пользователей
-          }
-      }
-    }
- 
- 
-  }
- 
-}, [data, userData, isLoading]);
+//     useEffect( () => {
 
- 
+//       if(data === null &&   !userData){  setLogout(true);    }
+     
+// }, [data  ]);
+
 
 
   if (typeof window !== "undefined") {
@@ -117,16 +82,15 @@ import React, { FC, useEffect, useState } from "react";
     }
   };
 
-  console.log( 'Header===================== user=', user);
-  // console.log(data);
-  //========================
+ // console.log( 'Header======= =======  userData=', userData);
+ 
  
   return (
     <>
-    {
+    {/* {
      isLoading ? (
        <Loader />
-     ) : (
+     ) : ( */}
        <div className="w-full relative">
        <div
          className={`${
@@ -177,31 +141,55 @@ import React, { FC, useEffect, useState } from "react";
                 />
               </div>
  
-              {user ? (
-                <Link href={"/profile"}>
-                  
-                  <Image
-                    src={ user.avatar ?  user.avatar.url : avatar}
-                    alt=""
-                    width={30}
-                    height={30}
-                    className="w-[30px] h-[30px] rounded-full cursor-pointer 
-                        dark:bg-slate-200 bg-slate-100 "
-                    style={{border: activeItem === 5 ? "2px solid #37a39a  " : "none"}}
-                  />
-                  <div className="hidden 800px:block cursor-pointer  dark:text-white  text-black "
-                  >
-                   { user?.name}</div>
-                  
-                </Link>
-              ) : (
-                <HiOutlineUserCircle
-                  size={25}   // Иконка нашего профиля
-                  className="hidden 800px:block cursor-pointer  dark:text-white  text-black "
-                  onClick={() => setOpen(true)}
-                />
-              )}
-            </div>
+{  profilepage ?   (  <>
+  {
+   userData  ? 
+   (  
+   <>
+           <Image
+             src={ userData.avatar ?  userData.avatar.url : avatar}
+             alt=""
+             width={30}
+             height={30}
+             className="w-[30px] h-[30px] rounded-full cursor-pointer 
+                 dark:bg-slate-200 bg-slate-100 "
+             style={{border: activeItem === 5 ? "2px solid #37a39a  " : "none"}}
+           />
+           <div className="hidden 800px:block cursor-pointer  dark:text-white  text-black "
+           >
+            { userData.name}  </div>
+       </>    
+   ) : (
+         <HiOutlineUserCircle   size={25}   // Иконка нашего профиля
+           className="hidden 800px:block cursor-pointer  dark:text-white  text-black "   onClick={() => setOpen(true)}    />
+       )
+     }
+</> ) : ( <>
+   {
+    userData  ? 
+      (  <Link href={"/profile"}>
+             <Image
+               src={ userData.avatar ?  userData.avatar.url : avatar}
+               alt=""
+               width={30}
+               height={30}
+               className="w-[30px] h-[30px] rounded-full cursor-pointer 
+                   dark:bg-slate-200 bg-slate-100 "
+               style={{border: activeItem === 5 ? "2px solid #37a39a  " : "none"}}
+             />
+             <div className="hidden 800px:block cursor-pointer  dark:text-white  text-black "
+             >
+              { userData.name}  </div>
+             
+           </Link>
+         ) : (
+           <HiOutlineUserCircle   size={25}   // Иконка нашего профиля
+             className="hidden 800px:block cursor-pointer  dark:text-white  text-black "   onClick={() => setOpen(true)}    />
+         )
+       }
+   </>
+  )    }
+             </div>
       </div>
       </div>
               {/* mobile sidebar -  боковая панель меню мобил   */}
@@ -213,10 +201,10 @@ import React, { FC, useEffect, useState } from "react";
         >
           <div className="w-[70%] fixed z-[999999999] h-screen bg-white dark:bg-slate-900 dark:bg-opacity-90 top-0 right-0">
             <NavItems activeItem={activeItem} isMobile={true} />
-            { user ? (
+            { userData ? (
               <Link href={"/profile"}>
                 <Image
-                  src={ user?.avatar ?  user.avatar.url : avatar}
+                  src={ userData?.avatar ?  userData?.avatar.url : avatar}
                   alt=""
                   width={30}
                   height={30}
@@ -282,7 +270,7 @@ import React, { FC, useEffect, useState } from "react";
         </>
       )}
       </div>
-     )}
+     {/* )} */}
     </>
    );
  };

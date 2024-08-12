@@ -52,9 +52,10 @@ const Login: FC<Props> = ({ setRoute, setOpen, refetch  }) => {
    //данные получены от useRegisterMutation     
       toast.success("Login Successfully!");
       setOpen(false); //закроем окно входа - передает выше
-      refetch();
+       refetch();  
     }
     if (error) { //если ошибка
+ 
       if ("data" in error) {
         const errorData = error as any;
         toast.error(errorData.data.message);

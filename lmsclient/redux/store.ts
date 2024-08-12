@@ -4,15 +4,15 @@
 import { configureStore } from "@reduxjs/toolkit";
   import { apiSlice } from "./features/api/apiSlice";
   import authSlice from "./features/auth/authSlice";
-import shopSlice from "./features/shop/shopSlice";
+  import shopSlice from "./features/shop/shopSlice";
 
 //конфигурируем из toolkit
 export const store = configureStore({
   //указываем редюсеры (а можно корневой редюсер rootReducer )
   reducer: {
       [apiSlice.reducerPath]: apiSlice.reducer,//это как бы корневой - путь
-     auth: authSlice,  // слайс аутентификации
-     shop: shopSlice,
+     auth: authSlice ,  // слайс аутентификации authSlice.reducer
+  shop: shopSlice ,
   },
  //временно 
 // devTools: false, 

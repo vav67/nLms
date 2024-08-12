@@ -57,11 +57,11 @@ const shopSchema = new mongoose_1.Schema({
     address: { type: String, required: true, },
     phoneNumber: { type: Number, required: true, },
     role: { type: String, default: "Seller", },
-    // avatar:      {
-    //     public_id: { type: String,  required: true, },
-    //           url: { type: String,  required: true, },
-    //             },
-    avatar: { type: String, }, //сам пока откоректировал 2 часть 4-22-46
+    avatar: {
+        public_id: { type: String, required: true, },
+        url: { type: String, required: true, },
+    },
+    // avatar:{  type: String, },   //сам пока откоректировал 2 часть 4-22-46
     zipCode: { type: Number, required: true, },
     withdrawMethod: { type: Object, },
     availableBalance: { type: Number, default: 0, },

@@ -19,19 +19,19 @@ import ShopVerification from "../Shop/ShopVerification";
 import ShopLogin from "../Shop/ShopLogin"; 
  
 
-// type Props = {
+type Props = {
 
-//     //  open: boolean;  //наш набор открыт
-//     // setOpen: (open: boolean) => void;
-//     user: any;
-//     avatar: string | null;
+     open: boolean;  //наш набор открыт
+   setOpen: (open: boolean) => void;
+    user: any;
+    avatar?: string | null;
 
  
-//   };
+  };
   
-  //const Profile: FC<Props> = ({ setOpen, open, user  }) => {
-    const Profile: FC = ( ) => {
-      const { user } = useSelector((state: any) => state.auth);
+ const Profile: FC<Props> = ({ setOpen, open, user  }) => {
+ //   const Profile: FC = ( ) => {
+   ////   const { user } = useSelector((state: any) => state.auth);
     
       const router = useRouter();
       //начальное состояния (переменные) 
@@ -52,7 +52,9 @@ const { data, isLoading } = useGetUsersAllCoursesQuery(undefined, {});
  
 
      //вызов api запрос на выход пользователя 
-     //если вы хотите предпринять дополнительные действия (например, отправить запрос на сервер) перед выходом пользователя из системы. Это может быть полезно, например, для очистки данных на стороне сервера перед завершением сеанса пользователя.
+     //если вы хотите предпринять дополнительные действия (например, отправить запрос на сервер) 
+     //перед выходом пользователя из системы. Это может быть полезно, например, для очистки данных на
+     // стороне сервера перед завершением сеанса пользователя.
      const {} = useLogOutQuery(undefined, {skip: !logout ? true : false,   });
 
       const [active, setActive] = useState(1);

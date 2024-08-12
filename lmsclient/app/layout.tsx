@@ -1,6 +1,5 @@
  "use client";
-// удалено ч2 01-47-43  import type { Metadata } from "next";
-//удалено import { Inter } from "next/font/google";
+ 
  
 import "./globals.css";
   import { Poppins } from "next/font/google";
@@ -61,9 +60,9 @@ export default function RootLayout({
  <ThemeProvider attribute= 'class'  defaultTheme="light"  > 
       {/*    attribute= '  class  '  defaultTheme='system' enableSystem   > */}
    
- <Custom>{children}</Custom>    
-  {/* <Custom><div>{children}</div> </Custom>      */}
-               {/* {children}   */}
+  <Custom>{children}</Custom>     
+   {/* <Custom><div>{children}</div> </Custom>    */}
+               {/* {children}     */}
          
             <Toaster position="top-center" reverseOrder={false} />     
              
@@ -78,7 +77,7 @@ export default function RootLayout({
  
   const Custom: FC<{ children: React.ReactNode }> = ({ children }) => {
     
-    const {   isLoading  } = useLoadUserQuery({});
+   ////////// const {   isLoading  } = useLoadUserQuery({});
   
    
 // пока сокет не запускаем
@@ -86,18 +85,14 @@ export default function RootLayout({
  
        socketId.on("connection", () => {}) //подключаемся
      }, []);
-
  
 
-
- // console.log(  '======== итак children='  )   
-
     return ( 
-      <>{isLoading ? <Loader /> : <div>{children}</div>}</> 
+      // <>{isLoading ? <Loader /> : <div>{children}</div>}</> 
+    
+      <>{children}</> 
     )
-    // return ( 
-    //   <>{  <div>{children}</div>}</> 
-    // )
+   
   } 
 
  /**

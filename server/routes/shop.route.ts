@@ -3,7 +3,10 @@ import {
     registrationShop,
     activateShop,
     loginShop,
-    sellerInfo
+    sellerInfo,
+    updateAccessShopToken,
+    updateShopProfilePicture,
+    updateShopInfo
 } from "../controllers/shop.controller"; 
 
 const shopRouter = express.Router(); // маршрутизатор
@@ -25,10 +28,27 @@ const shopRouter = express.Router(); // маршрутизатор
 
    shopRouter.post("/activate-shop", activateShop);
     shopRouter.post("/login-shop", loginShop);
-
+                                //isAutheticated
     shopRouter.post("/meseller", isAutheticatedseller, sellerInfo); //сам меняю
+
+        shopRouter.put("/update-shop-avatar",
+        updateAccessShopToken, //  updateAccessToken, //рефреш до аутентифик-и 06-47-29 "синхронизация" обновляет токен там next()
+        isAutheticatedseller, //isAutheticated,
+     updateShopProfilePicture  );
+  
+   shopRouter.put("/update-shop-info", 
+   updateAccessShopToken,  // updateAccessToken, //рефреш до аутентифик-и 06-47-29 "синхронизация" обновляет токен там next()
+   isAutheticatedseller, //isAutheticated, 
+    updateShopInfo);
+   
+  
+    // userRouter.put("/update-user-password", 
+    // updateAccessToken, //рефреш до аутентифик-и 06-47-29 "синхронизация" обновляет токен там next()
+    // isAutheticated, updateUserPassword)
+   
   
 
+  
 
 
 

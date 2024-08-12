@@ -31,6 +31,7 @@ type Props = {
   activeVideo: number; //активное видео номер
   setActiveVideo: (activeVideo: number) => void;
   user: any;
+            
   refetch: any;
 };
 
@@ -40,6 +41,7 @@ const CourseContentMedia = ({
   activeVideo,
   setActiveVideo,
    user,
+ 
   refetch,
 }: Props) => {
   //состояния

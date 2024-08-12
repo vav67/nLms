@@ -23,6 +23,8 @@ const ProfileInfo: FC<Props> = ({ avatar, user, theme }) => {
 
    //вызов для изменения аватара
    const [updateAvatar, { isSuccess, error }] = useUpdateAvatarMutation();
+
+
 //вызываем для изменения профиля
  const [editProfile, { isSuccess: success, error: updateError }] = useEditProfileMutation();
       
@@ -33,6 +35,8 @@ const ProfileInfo: FC<Props> = ({ avatar, user, theme }) => {
  const {} = useLoadUserQuery(undefined, { skip:loadUser ? false : true });
 
   
+
+// Изменяем аватар
    const imageHandler = async (e: any) => {
     
     const fileReader = new FileReader();
@@ -51,6 +55,9 @@ const ProfileInfo: FC<Props> = ({ avatar, user, theme }) => {
    // console.log( ' ===прошли') 
     fileReader.readAsDataURL(e.target.files[0]);
    };
+
+
+
 
   useEffect(() => {
     console.log( '*********** проверим результат isSuccess=', isSuccess) 
@@ -83,12 +90,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user, theme }) => {
     if (name !== "") {  await editProfile({ name: name,   });  }
    };
  
-   const ppp = async (e: any) => {
-    e.preventDefault();
-    console.log( '***клик********  ') 
-    setLoadUser(true);
-
-  };
+ 
 
   return (
     <>
@@ -124,6 +126,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user, theme }) => {
       <br />
       <br />
       <div className="w-full pl-6 800px:pl-10">
+        
          <form onSubmit={handleSubmit}>
           <div className="800px:w-[50%] m-auto block pb-4">
             <div className="w-[100%]">
@@ -157,13 +160,7 @@ const ProfileInfo: FC<Props> = ({ avatar, user, theme }) => {
           </div>
         </form>  
         <br />
-        <div>
-        <AiOutlineCamera size={20} 
-      className={` ${theme === 'dark' ? "fill-[#f8f8f8]" : "fill-[#080808]"  } ` }
-      onClick={  ppp   }
-            />
-
-        </div>
+    
       </div>
     </>
   );

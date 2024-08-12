@@ -8,16 +8,34 @@ type RegistrationResponse = {
   activationTokenShop: string;
 };
 
-type RegistrationData = {};
+  type RegistrationData = {
+    name: string; 
+    email: string; 
+    password: string; 
+    address: string;
+     phoneNumber: number; 
+    zipCode: number;
+
+  };
+
+  export type Tprofil = {
+   name: string;
+   description:string;
+   address:string;
+   phoneNumber: number | undefined   ; 
+   zipCode: number | undefined ;
+
+  }
 
 
 export const shopApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
    
-  //-------- регистрация ----------------------------  
- // registershop: builder.mutation<RegistrationResponse, RegistrationData>({
-    registershop: builder.mutation ({
-      query: (data) => ({ //данные type к запросу
+  //-------- регистрация --------что получаем в ответ-----то что отправляем--  
+  registershop: builder.mutation<RegistrationResponse, RegistrationData>({
+ //   registershop: builder.mutation ({
+// data -как параметр
+ query: (data:RegistrationData) => ({ //данные type к запросу
         url: `create-shop`,
         method: "POST",
         body: data, 
@@ -53,7 +71,7 @@ export const shopApi = apiSlice.injectEndpoints({
 // ------------Вход логинимся------------------
 
 //следующий эндпоинт  - чанк
-    loginshop: builder.mutation({
+    loginshop: builder.mutation ({
   query: ({ email, password }) => ({
     url: "login-shop", //добавим к пути
     method: "POST",
@@ -97,7 +115,7 @@ credentials: "include" as const,
 
 //----------аутентификация прордавца магазина ---------------------
  //C:\Users\qq\15-07-2024 соединение приложений\!!! запросы API query или mutation.txt
-//loadSeller: builder.mutation({ //запрос вручную срабатывае
+ 
  meSeller: builder.query({  // запрос автоматом срабатывает
 
 query: (data) => ({
@@ -110,9 +128,10 @@ query: (data) => ({
        
       const result = await queryFulfilled;
  
+      console.log( '%%%=meseller=====', result.data.seller  )
+
       dispatch(
-       // sellerLoggedIn({
-        shopInseller ({    seller: result.data.seller,      })
+         shopInseller ({    seller: result.data.seller      })
       );
 
     } catch (error: any) {
@@ -121,7 +140,33 @@ query: (data) => ({
   },
 }),
 
+//--------------- автар ----------------------------------------
 
+updateAvatarShop: builder.mutation({
+  query: (avatar) => ({ 
+    url: "update-shop-avatar", //из server/routes/user.route.ts  "/update-user-avatar" updateProfilePicture
+    method: "PUT",
+       body: { avatar }, //на сервере параметры const { avatar } = req.body;const userId = req.user?._id;
+    credentials: "include" as const, //полномочия включены
+  }),
+ 
+}),
+
+//--------------профиль----------------------------------------
+    
+editProfileShop: builder.mutation({
+  query: (prof:Tprofil) => ({
+    url: "update-shop-info",
+    method: "PUT",
+    body: prof,
+    credentials: "include" as const,
+  }),
+ 
+}),
+
+
+
+//--------------------------------------------------------
 
 
 
@@ -135,6 +180,8 @@ export const {
   useRegistershopMutation,
   useActivationshopMutation,
 useLoginshopMutation,
- useMeSellerQuery
+useMeSellerQuery,
+useUpdateAvatarShopMutation,
+useEditProfileShopMutation,
  
       } = shopApi;

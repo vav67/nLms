@@ -8,6 +8,10 @@ import Footer from "../components/Footer";
 type Props = {};
 
 const Page = (props: Props) => {
+
+  const[ profilepage, setProfilepage] = useState(false) //это не профайл пэйдж
+  const [pagedatauser, setPagedatauser] = useState(null);
+
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(2);
   const [route, setRoute] = useState("Login");
@@ -25,6 +29,10 @@ const Page = (props: Props) => {
         activeItem={activeItem}
         setRoute={setRoute}
         route={route}
+
+        profilepage = {profilepage}
+        userData ={pagedatauser}
+       // refetch={refetch}
       />
       <About />
       <Footer />

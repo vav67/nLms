@@ -33,10 +33,15 @@ import Footer from "../components/Footer";
   //состояния создадим
   const [route, setRoute] = useState("Login");
   const [open, setOpen] = useState(false);
+  const[ profilepage, setProfilepage] = useState(false) //это не профайл пэйдж
+  const [pagedatauser, setPagedatauser] = useState(null);
+  
   const [courses, setcourses] = useState([]);
-  const [category, setCategory] = useState("All");
+    const [category, setCategory] = useState("All");
   // const [myy, setMyy] = useState([]);
   
+
+
   useEffect(() => {
     // console.log( '=========== поск data=', data )
     // setMyy( data?.course.filter((item: any) => {
@@ -97,6 +102,11 @@ import Footer from "../components/Footer";
             open={open}
             setOpen={setOpen}
             activeItem={1}
+          
+            profilepage = {profilepage}
+            userData ={pagedatauser}
+           // refetch={refetch}
+
           />
           <div className="w-[95%] 800px:w-[85%] m-auto min-h-[70vh]">
             <Heading

@@ -20,6 +20,9 @@ const CourseDetailsPage = ({ id }: Props) => {
   //состояния
   const [route, setRoute] = useState("Login");
   const [open, setOpen] = useState(false);
+  const[ profilepage, setProfilepage] = useState(false) //это не профайл пэйдж
+  const [pagedatauser, setPagedatauser] = useState(null);
+
   //когда пользователь не аутентифицирован
  //получим о курсе
   const { data, isLoading } = useGetCourseDetailsQuery(id);
@@ -72,6 +75,11 @@ const [createPaymentIntent, { data: paymentIntentData }] =
             open={open}
             setOpen={setOpen}
             activeItem={1}
+
+            profilepage = {profilepage}
+            userData ={pagedatauser}
+            //refetch={refetch}
+
           />
           {stripePromise && (  // если есть
             <CourseDetails

@@ -33,6 +33,7 @@ const ShopCreate: FC<Props> = ({ setRoute,  activeItem } ) => {
   const [zipCode, setZipCode] = useState<any>();//почтовый индекс
   const [avatar, setAvatar] = useState<any>(null);
   const [password, setPassword] = useState("");
+
   const [visible, setVisible] = useState(false);
   const [scroll, setScroll] = useState(false);
   //получаем ответ от запроса
@@ -112,7 +113,7 @@ const ShopCreate: FC<Props> = ({ setRoute,  activeItem } ) => {
 //            toast.error(error.response.data.message);
 //          });
 await register({ name, email, password, address, phoneNumber, 
-  zipCode }); //данные отправили в слайс для сохранения store
+  zipCode  }); //данные отправили в слайс для сохранения store
 
 
   }

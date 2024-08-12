@@ -1,9 +1,10 @@
 "use client";
-
+// заголовок магазина
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import avatarIcon from "../../../../public/next.svg";
 
 import { AiOutlineGift } from "react-icons/ai";
 import { MdOutlineLocalOffer } from "react-icons/md";
@@ -15,10 +16,13 @@ import { ThemeSwitcher } from '@/app/utils/ThemeSwitcher';
 //import { backend_url } from "../../../server";
  
 
-const DashboardHeaderShop = () => {
 
+const DashboardHeaderShop = ({seller }:any ) => {
+  if (!seller) return null; // Компонент проверяет наличие данных и не рендерится без них
   //  const { user } = useSelector((state: any) => state.auth);
-       const { seller } = useSelector((state:any) => state.shop )
+     //  const { seller } = useSelector((state:any) => state.shop )
+
+     console.log( 'DashboardHeaderShop  === ', seller)  
 
 return (
   <div className="w-full h-[80px] bg-white shadow sticky top-0 left-0 
@@ -57,11 +61,12 @@ return (
 <BiMessageSquareDetail color="#555" size={30} title={"Enrolled Courses"} className="mx-5 cursor-pointer" />
         </Link>
 
-     <Link href={`/shophomepage`}>
-          <img  src={`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URI}${seller.avatar}`}     //  src={`${seller.avatar?.url}`}
+  <Link href={`/shop/shophomepage`}>
+          <img  src= {seller.avatar?.url ? seller.avatar?.url : avatarIcon }
+        
    alt=""       className="w-[50px] h-[50px] rounded-full object-cover"
           />
-        </Link> 
+        </Link>   
             <div  className={` text-black dark:text-white`} //сам добавил из за зависания
             ><ThemeSwitcher   /></div> 
       </div>

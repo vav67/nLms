@@ -11,6 +11,9 @@ const Page = (props: Props) => {
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(3);
   const [route, setRoute] = useState("Login");
+  const[ profilepage, setProfilepage] = useState(false) //это не профайл пэйдж
+  const [pagedatauser, setPagedatauser] = useState(null);
+
 
   return (
     <div>
@@ -25,6 +28,11 @@ const Page = (props: Props) => {
         activeItem={activeItem}
         setRoute={setRoute}
         route={route}
+      
+        profilepage = {profilepage}
+        userData ={pagedatauser}
+      //  refetch={refetch}
+
       />
       <Policy />  
       <Footer />

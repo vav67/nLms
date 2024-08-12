@@ -21,6 +21,7 @@ export const userApi = apiSlice.injectEndpoints({
      //-----самому доделать надо -------
     }),
 
+    
     editProfile: builder.mutation({
       query: ({ name }) => ({
         url: "update-user-info",

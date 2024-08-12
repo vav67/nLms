@@ -19,6 +19,7 @@ const analytics_route_1 = __importDefault(require("./routes/analytics.route"));
 const layout_route_1 = __importDefault(require("./routes/layout.route"));
 const express_rate_limit_1 = require("express-rate-limit"); //ограничение против спама
 const shop_route_1 = __importDefault(require("./routes/shop.route"));
+const shopproduct_route_1 = __importDefault(require("./routes/shopproduct.route"));
 //const allowedOrigins = process.env.ORIGIN 
 //const allowedOrigins = ['http://localhost:3000' ];
 // app.use(cors({
@@ -58,7 +59,7 @@ exports.app.use("/api/v1", user_route_1.default, course_route_1.default, order_r
 analytics_route_1.default, //аналитика
 layout_route_1.default, 
 //--------------------магазин  
-shop_route_1.default);
+shop_route_1.default, shopproduct_route_1.default);
 //testing api - это тест API
 exports.app.get("/test", (req, res, next) => {
     const acc = req.cookies.access_token;

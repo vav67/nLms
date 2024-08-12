@@ -1,0 +1,97 @@
+// pages/shop/[id].tsx
+import { useLoadUserQuery } from '@/redux/features/api/apiSlice';
+import { GetServerSideProps } from 'next';
+//import { useParams } from 'next/navigation';
+
+
+
+ //export default function Page(  {params}:any ) {
+  export default function Page(    params: { success:any }  ) {
+
+ // {data}:any
+  ////////const{message ,success } = params
+  const{ success } = params
+  
+  //const params = useParams()
+   console.log( 'params=', params)
+  // if (!sellerData || !userData) {
+    if (  !success) {
+    return <div>404 - Страница не найдена</div>;
+  }
+
+  return (
+    <div>  {success}==={params.success }===
+      Магазинчик page   -------- {/*-{  message}            {sellerData?.id} */}
+    </div>
+  );
+}
+
+// success: true,
+// message:
+
+
+// export async function getData() {
+//   const  datares   = await fetch("http://localhost:8000/test",
+//   {
+//    method:'GET',
+//  //   headers: {
+//  //      Accept: 'application/json',
+//  //      'Content-Type': 'application/json',
+//  //   },
+//  //  body: "11",   //JSON.stringify( user ),   //body: JSON.stringify(payload)   //  должен быть строкой JSON а не объектом  body: {  user,  },
+// // credentials: "include", 
+// credentials: 'same-origin',
+//  })  //.then(res => res.json())
+//  //console.log( '=======sst=', data)
+//  //const data = await datares.json()
+
+//   return  datares.json();    // data  ;
+// }
+
+//https://github.com/vercel/next.js/issues/42840           - generateStaticParams не работает с несколькими
+
+// generateStaticParams должен возвращать массив объектов, где каждый объект представляет 
+//собой заполненные динамические сегменты одного маршрута.
+
+export   async function generateStaticParams( { params: { success  }}: any) {        // getServerSideProps 
+  // Пример запросов к API
+ // const sellerData = ''// await fetch(`https://api.example.com/seller/${id}`).then(res => res.json());api/v1/me
+  const userData = await fetch("http://localhost:8000/test",
+   {
+    method:'GET',
+    headers: {
+       Accept: 'application/json',
+       'Content-Type': 'application/json',
+    },
+  //  body: "11",   //JSON.stringify( user ),   //body: JSON.stringify(payload)   //  должен быть строкой JSON а не объектом  body: {  user,  },
+  credentials: "include", 
+  }).then((res) => res.json());
+ 
+  // console.log( '=======sst=', userData)
+ 
+
+  if ( !userData.success) {  
+return {
+  message: "0",  // notFound: true,
+    };
+  }
+//https://stackoverflow.com/questions/76594955/getting-undefined-params-in-my-compoment-with-generatestaticparams-nextjs-13-ho?rq=1
+  // return [{
+  //   params: {
+  //     userData,
+  //     success: userData.success,
+  //     message: userData.message, // userData ,
+  //   },
+  // }]
+  return [ {
+   
+      params: {
+        success: userData.success,
+      //  message: userData.message,
+      },
+    
+  }  ]
+
+ 
+}
+

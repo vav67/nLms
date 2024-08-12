@@ -16,10 +16,15 @@ import { HiOutlineReceiptRefund } from "react-icons/hi";
 type Props = {
  
   active:any;
+ seller:any;
 };
 
  
-  const DashboardSideBarShop: FC<Props> = ({ active }) => {
+  const  DashboardSideBarShop: FC<Props> = ({ active, seller  }) => {
+
+    if (!seller) return null; // Компонент проверяет наличие данных и не рендерится без них
+    console.log( '====seller =', seller  )   
+    
   return (
     <div className="w-full h-[90vh] bg-white shadow-sm overflow-y-scroll sticky top-0 left-0 z-10">
       {/* single item */}
@@ -65,18 +70,18 @@ type Props = {
         </Link>
       </div>
 
-      <div className="w-full flex items-center p-4">
-        <Link
-          href={"/dashboard-create-product" }
-          className="w-full flex items-center"
+      <div className={`w-full flex items-center p-4  
+  ${active === 4 ? "bg-[#4cbd3fc9]" : " dark:bg-[#2d3a4e]" }   `}>
+   <Link href={"/shop/shopcreateproduct" } className="w-full flex items-center"
         >
           <AiOutlineFolderAdd
             size={30}
             color={`${active === 4 ? "crimson" : "#555"}`}
           />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
-              active === 4 ? "text-[crimson]" : "text-[#555]"
+            className={`hidden 800px:block pl-2 text-[18px] font-[400]
+            text-black dark:text-white 
+            ${active === 4 ? "text-[crimson]" : "text-[#555]"
             }`}
           >
             Create Product
@@ -184,14 +189,16 @@ type Props = {
       </div>
 
 
-  <div className="w-full flex items-center p-4">
-        <Link href={"/settings" }  className="w-full flex items-center">
+                   <div className={`w-full flex items-center p-4  
+  ${active === 11 ? "bg-[#4cbd3fc9]" : " dark:bg-[#2d3a4e]" }   `}>
+        <Link href={ `/shop/shopsettingpage` }  className="w-full flex items-center">
           <CiSettings
             size={30}
             color={`${active === 11 ? "crimson" : "#555"}`}
           />
           <h5
-            className={`hidden 800px:block pl-2 text-[18px] font-[400] ${
+            className={`hidden 800px:block pl-2
+             text-[18px] font-[400]  text-black dark:text-white ${
               active === 11 ? "text-[crimson]" : "text-[#555]"
             }`}
           >
@@ -203,4 +210,4 @@ type Props = {
   )
 }
 
-export default DashboardSideBarShop
+export default  DashboardSideBarShop

@@ -1,5 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { userLoggedIn } from "../auth/authSlice";
+ 
+
+type RegistrationResponse = {
+  message: string;
+  activationToken: string;
+};
+
+type RegistrationData = {};
 
 // RTK query------------------------------
 
@@ -48,72 +56,73 @@ refreshToken: builder.query({
 
 
 
- //выполняем загрузку юзеров    
-    OLdloadUser: builder.query({
-      query: (data) => ({
-        url: "memmmmmm",
-        method: "GET",
-        credentials: "include" as const,
-      }),
-// получим
-   /**Часто при работе с асинхронными вызовами, до и после отправки запроса,
-* необходимо осуществить дополнительное действие. Для этих целей стоит использовать 
-* onQueryStarted. Модифицировать запрос не получится, однако возможно отследить 
-* его состояние с помощью queryFulfilled
- */    
-  //arg -аргументы
-   async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-     // console.log( '----------------onQueryStarted начало' );
-          const result = await queryFulfilled;
-          //const { data } = await queryFulfilled;
-          //   console.log(data);
-        //  console.log( '----------onQueryStarted result.data.=', result );
-     {/* 
-     https://github.com/reduxjs/redux-toolkit/issues/2064
-     Моим окончательным решением было обновить каждый onQueryStarted
-    let res = await queryFulfilled.catch(e => ({error: e}))
-           if (error in res) return;
-             // ... dispatch logic
-    */}
+//  //выполняем загрузку юзеров    
+//     OLdloadUser: builder.query({
+//       query: (data) => ({
+//         url: "memmmmmm",
+//         method: "GET",
+//         credentials: "include" as const,
+//       }),
+// // получим
+//    /**Часто при работе с асинхронными вызовами, до и после отправки запроса,
+// * необходимо осуществить дополнительное действие. Для этих целей стоит использовать 
+// * onQueryStarted. Модифицировать запрос не получится, однако возможно отследить 
+// * его состояние с помощью queryFulfilled
+//  */    
+//   //arg -аргументы
+//    async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+//         try {
+//      // console.log( '----------------onQueryStarted начало' );
+//           const result = await queryFulfilled;
+//           //const { data } = await queryFulfilled;
+//           //   console.log(data);
+//         //  console.log( '----------onQueryStarted result.data.=', result );
+//      {/* 
+//      https://github.com/reduxjs/redux-toolkit/issues/2064
+//      Моим окончательным решением было обновить каждый onQueryStarted
+//     let res = await queryFulfilled.catch(e => ({error: e}))
+//            if (error in res) return;
+//              // ... dispatch logic
+//     */}
      
-//      if ( result.data.user === undefined  )
-//      {
-//       console.log( 'ПРОБАЮЗЕР=====onQueryStarted  ЮЗЕР ПУСТОЙ' )  
+// //      if ( result.data.user === undefined  )
+// //      {
+// //       console.log( 'ПРОБАЮЗЕР=====onQueryStarted  ЮЗЕР ПУСТОЙ' )  
 
-//      }
-//  else {
-          dispatch(
-            userLoggedIn({
-              accessToken: result.data.accessToken,
-              user: result.data.user,
-            })
-          );
-    //  }
-        } catch (error: any) {
-          console.log( 'onQueryStarted ОШИБКА====== ', error);
+// //      }
+// //  else {
+//           dispatch(
+//             userLoggedIn({
+//               accessToken: result.data.accessToken,
+//               user: result.data.user,
+//             })
+//           );
+//     //  }
+//         } catch (error: any) {
+//           console.log( 'onQueryStarted ОШИБКА====== ', error);
          
  
-// Обработка ошибки более подробно
-// if (error.status === 401) {
-//     // Обработка случая, когда получен статус 401 (Unauthorized)
-//     console.log('Ошибка 401: Пользователь не авторизован');
-// } else {
-//     // Обработка других возможных ошибок
-//     console.error('Произошла ошибка при выполнении запроса:', error);
-// }
+// // Обработка ошибки более подробно
+// // if (error.status === 401) {
+// //     // Обработка случая, когда получен статус 401 (Unauthorized)
+// //     console.log('Ошибка 401: Пользователь не авторизован');
+// // } else {
+// //     // Обработка других возможных ошибок
+// //     console.error('Произошла ошибка при выполнении запроса:', error);
+// // }
 
 
-        }
-      },
-    }),
+//         }
+//       },
+//     }),
 //--------------------------------------------------------------
-loadUser: builder.query({
+loadUser: builder.query  ({
   query: (data) => ({
     url: "me",
     method: "POST", ////////////////////////изменено
     credentials: "include" as const,
   }),
+
   async onQueryStarted(arg, { queryFulfilled, dispatch }) {
     try {
        
@@ -132,13 +141,47 @@ loadUser: builder.query({
 }),
 //------------------------------------------------------------
 
-    
+// meSeller: builder.query({  // запрос автоматом срабатывает
+
+//   query: (data) => ({
+//       url: "meseller",
+//       method: "POST", ////////////////////////изменено
+//       credentials: "include" as const,
+//     }),
+//     async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+//       try {
+         
+//         const result = await queryFulfilled;
+   
+//         console.log( '%%%=meseller=====', result.data.seller  )
+  
+//         dispatch(
+//            shopInseller({    seller: result.data.seller      })
+//         );
+  
+//       } catch (error: any) {
+//         console.log(error);
+//       }
+//     },
+//   }),
+  
+  
+  
+  
+  
+  
+  
+
+
+//------------------------------------------------------
    }),
 })
 export const { 
         useRefreshTokenQuery, 
         useLoadUserQuery,
-        useLazyOLdloadUserQuery
+    //    useLazyOLdloadUserQuery 
+//useMeSellerQuery
+
  } = apiSlice;
 
  

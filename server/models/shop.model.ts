@@ -13,11 +13,11 @@ export interface IShop extends Document {
     address:   string;
     phoneNumber: number ;
     role:  string;  
-    avatar: string; //сам пока откоректировал 
-    // avatar: {
-    //   public_id: string;
-    //   url: string;
-    // };
+   // avatar: string; //сам пока откоректировал 
+    avatar: {
+      public_id: string;
+      url: string;
+    };
    
     // было    inVerified: boolean;
   // сам изменил
@@ -79,11 +79,11 @@ const shopSchema = new Schema<IShop>({
   address:     { type: String,  required: true,    },
   phoneNumber: { type: Number,  required: true,    },
   role:        { type: String,  default: "Seller", },
-  // avatar:      {
-  //     public_id: { type: String,  required: true, },
-  //           url: { type: String,  required: true, },
-  //             },
-  avatar:{  type: String, },   //сам пока откоректировал 2 часть 4-22-46
+  avatar:      {
+      public_id: { type: String,  required: true, },
+            url: { type: String,  required: true, },
+              },
+ // avatar:{  type: String, },   //сам пока откоректировал 2 часть 4-22-46
 
   zipCode:          { type: Number,   required: true,  },
   withdrawMethod:   { type: Object,  },

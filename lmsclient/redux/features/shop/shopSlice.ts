@@ -7,7 +7,7 @@ const initialState = {
     message: "",
     activationTokenShop: "",
 
-    seller:{},
+    seller:"",  //{},
     accessTokenShop:"",
 };
 
@@ -27,18 +27,9 @@ shopRegistration: (state, action: PayloadAction<{
 
   shopLoggedIn: ( state, action: PayloadAction<{
     accessTokenShop: string;
-    seller: object }>
+    seller: string }>
      ) => {
-//         // if ( action.payload.user === undefined   && action.payload.accessToken === undefined  )
-//         // {
-//      //////// console.log( '======клиент =редюсер==userLoggedIn======== ', action.payload )  
-//       // state.token = ''
-//       // state.user =  ''
-//       // }
-//       // else {   
-//       state.token = action.payload.accessToken; //токен доступа
-//       state.user = action.payload.user;
-//       //  }
+ 
      
 state.seller = action.payload.seller; // инфа об магазине
 state.accessTokenShop = action.payload.accessTokenShop;
@@ -48,8 +39,9 @@ state.accessTokenShop = action.payload.accessTokenShop;
 
 
  
-shopInseller: ( state, action: PayloadAction<{ seller: object }>
+shopInseller: ( state, action: PayloadAction<{ seller: string }>
    ) => {
+    console.log( '%%%=shopInseller=====', action.payload.seller  )   
  state.seller = action.payload.seller; // инфа о продавце магазине
  },
 
@@ -68,4 +60,5 @@ shopInseller: ( state, action: PayloadAction<{ seller: object }>
   shopInseller,
  } = shopSlice.actions;
 
- export default shopSlice.reducer;
+  export default shopSlice.reducer;
+ 

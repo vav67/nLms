@@ -14,6 +14,7 @@ import userRouter from "./routes/user.route";
   import layoutRouter from "./routes/layout.route";
   import { rateLimit } from 'express-rate-limit'  //ограничение против спама
 import shopRouter from "./routes/shop.route";
+  import shopproductRouter from "./routes/shopproduct.route";
 
 
   //const allowedOrigins = process.env.ORIGIN 
@@ -82,7 +83,8 @@ app.use( "/api/v1",
    analyticsRouter,  //аналитика
     layoutRouter,
    //--------------------магазин  
-    shopRouter
+    shopRouter,
+    shopproductRouter
  );
 
 
@@ -96,7 +98,7 @@ app.get("/test", (req: Request, res: Response, next: NextFunction) => {
 
   res.status(200).json({
       success: true,
-      message: "API is working-23 июля - 12:25 acctoken="+ acc ,
+      message: "API is working-12-08 - 08:20 acctoken="+ acc ,
     });
 
   });
