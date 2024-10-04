@@ -45,8 +45,8 @@ userRouter.get("/refresh", updateAccessToken);
 //  isAutheticated, //проверка аутен-ции из кука
 //  getUserInfo
 //  )
- //userRouter.get("/me", isAutheticated, getUserInfo);
-  userRouter.post("/me", isAutheticated, getUserInfo); //сам меняю
+ userRouter.get("/me", isAutheticated, getUserInfo);
+ // userRouter.post("/me", isAutheticated, getUserInfo); //сам меняю
   
  userRouter.post("/ttt", isttt , tttUser) //добавил для пробы июнь 2024 
 

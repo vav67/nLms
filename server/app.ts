@@ -103,7 +103,7 @@ app.get("/test",  (req: Request, res: Response, next: NextFunction) => {
 
   res.status(200).json({
       success: true,
-      message: "API is  =NO redis= working-04-10 - 15:55 acctoken="+ acc ,
+      message: "API is get =NO redis= working-04-10 - 15:55 acctoken="+ acc ,
     });
 
   });
