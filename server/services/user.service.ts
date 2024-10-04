@@ -38,7 +38,7 @@ export const getUserById = async (id: string, res: Response) => {
 
     user  = await User.findById( id)
 //  запишем в редис
-   await redis.set(id, JSON.stringify(user));// запишем в кэш
+  // await redis.set(id, JSON.stringify(user));// запишем в кэш
     res.status(209).json({ success: true, user, }); 
 
 
