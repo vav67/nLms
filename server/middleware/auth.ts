@@ -100,7 +100,7 @@ export const isAutheticated = CatchAsyncError(
   // декодируем , учитывая соль
   const decoded = jwt.verify(access_token,  process.env.ACCESS_TOKEN as string) as JwtPayload;
 
- //console.log("2------промежуточное isAutheticated /////// декодируем =", decoded)  
+ console.log("2------промежуточное isAutheticated /////// декодируем =", decoded)  
 
     if (!decoded) {
      // console.log("2-2-----промежуточное isAutheticated access token is not valid" ) 
@@ -110,7 +110,7 @@ export const isAutheticated = CatchAsyncError(
     // проверьте, истек ли срок действия токена доступа
     if (decoded.exp && decoded.exp <= Date.now() / 1000) {
       try {
-      //  console.log("3333------промежуточное isAutheticated  срок действия")    
+       console.log("3333------промежуточное isAutheticated  срок действия")    
         
         await updateAccessToken(req, res, next);
 
@@ -118,18 +118,23 @@ export const isAutheticated = CatchAsyncError(
         return next(error);
       }
     } else {
+
+      
+   // соединение с бд
+   await connectDB();
+   
     //берем из redis  
            const user = await redis.get(decoded.id);
-        //   console.log("4------промежуточное isAutheticated из редис", user)   
+          console.log("4------промежуточное isAutheticated из редис", user)   
 
       if (!user) { //в redis jncencndetn
        
        try {
         const uu:any = await User.findById(decoded.id)
-       // console.log("5------промежуточное isAutheticated  поиск", uu)   
+        console.log("5------промежуточное isAutheticated  поиск", uu)   
 
         req.user = uu  //  JSON.parse(uu);
-       // console.log("33------промежуточное isAutheticated /  =",  req.user) 
+      console.log("33------промежуточное isAutheticated /  =",  req.user) 
 
         next() 
       

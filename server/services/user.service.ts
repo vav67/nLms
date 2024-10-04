@@ -32,6 +32,10 @@ export const getUserById = async (id: string, res: Response) => {
     res.status(201).json({ success: true, user, });
   } else
   {
+
+   // соединение с бд
+   await connectDB();
+
     user  = await User.findById( id)
 //  запишем в редис
    await redis.set(id, JSON.stringify(user));// запишем в кэш
