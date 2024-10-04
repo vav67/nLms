@@ -2,7 +2,7 @@ import { app } from "./app";
 import {v2 as cloudinary} from 'cloudinary'
             import http from "http";
 import connectDB from "./utils/db"; 
-           import { initSocketServer } from "./socketServer";
+ // приостановил 03-10-2024  import { initSocketServer } from "./socketServer";
 
 require("dotenv").config()
 
@@ -19,7 +19,7 @@ cloudinary.config({
   api_secret:process.env.CLOUD_SECRET_KEY,
 })
 
-initSocketServer(server); // Инициализируем сокет-сервер
+ // приостановил 03-10-2024 initSocketServer(server); // Инициализируем сокет-сервер
 
 
 //create server  // Запускаем сервер на прослушивание порта

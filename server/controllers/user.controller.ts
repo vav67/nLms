@@ -350,15 +350,19 @@ if (!session) {
 export const getUserInfo = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-   console.log("---------контроллер-/me--getUserInfo ")
+  // console.log("---------контроллер-/me--getUserInfo ")
 
       const userId = req.user?._id;
  //         if (userId) {
-        getUserById(userId, res);
+        getUserById(userId, res);  
    // } else {
    //     return next(new ErrorHandler("User ID is not defined", 400));
    // }
 
+
+
+
+   
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 411));
     }

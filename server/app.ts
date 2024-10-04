@@ -98,7 +98,7 @@ app.get("/test", (req: Request, res: Response, next: NextFunction) => {
 
   res.status(200).json({
       success: true,
-      message: "API is working-12-08 - 08:20 acctoken="+ acc ,
+      message: "API is working-03-10 - 19:10 acctoken="+ acc ,
     });
 
   });

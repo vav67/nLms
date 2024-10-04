@@ -3,6 +3,9 @@ import { Response } from "express";
  import User from "../models/user.model";
  import connectDB from "../utils/db"; 
 
+ 
+
+
 // получение пользователя по идентификатору
 // из бд
 //зам-м  export const getUserById = async (id: string, res: Response ) => {
@@ -19,11 +22,24 @@ export const getUserById = async (id: string, res: Response) => {
    // соединение с бд
    await connectDB();
   const userJson = await redis.get(id);
+
+
  // получим с кэша redis, и пользователь передается в
  // формате Json
+ let user
   if (userJson) {
-    const user = JSON.parse(userJson);
+      user = JSON.parse(userJson);
     res.status(201).json({ success: true, user, });
+  } else
+  {
+    user  = await User.findById( id)
+//  запишем в редис
+   await redis.set(id, JSON.stringify(user));// запишем в кэш
+    res.status(209).json({ success: true, user, }); 
+
+
+   
+  
   }
  
 

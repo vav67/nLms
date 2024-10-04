@@ -30,8 +30,8 @@ const Page = () => {
 
    
 
-    const {data:userData ,isLoading:isLoadinguser, error, refetch} = useLoadUserQuery(undefined, {}); 
-    const { data: sellerData, isLoading, error:sellererror } =  useMeSellerQuery({}); 
+    const {data:userData ,isLoading:isLoadinguser, error } = useLoadUserQuery(undefined, {}); 
+    const { data: sellerData, isLoading, error:sellererror, refetch } =  useMeSellerQuery({}); 
 
    //начальное состояния (переменные)  
    const [open, setOpen] = useState(false);
@@ -41,7 +41,7 @@ const Page = () => {
    const [route, setRoute] = useState("Login");
    
    
- 
+   console.log( '==== shopdashboardpage =', sellererror  )   
 
 
  useEffect( () => {
@@ -75,7 +75,7 @@ console.log( ' =   useEffect  sellerData=', sellerData )
    
  
 
-//console.log( '======userData =', userData?.user  )   
+ console.log( '======userData =', userData?.user  )   
 
   return (
    <> {( isLoading || isLoadinguser) ? (
@@ -121,7 +121,7 @@ console.log( ' =   useEffect  sellerData=', sellerData )
               setRoute={setRoute}
               activeItem={activeItem}
               component={ShopCreate}
-           //  refetch={refetch}
+             refetch={refetch}
             />
           )}  
 
@@ -132,7 +132,7 @@ console.log( ' =   useEffect  sellerData=', sellerData )
               setRoute={setRoute}
               activeItem={activeItem}
               component={ShopVerification}
-           //  refetch={refetch}
+             refetch={refetch}
             />
           )}  
 <>
@@ -145,7 +145,7 @@ console.log( ' =   useEffect  sellerData=', sellerData )
               setRoute={setRoute}
               activeItem={activeItem}
               component={ShopLogin}
-           //  refetch={refetch}
+              refetch={refetch}
             />
           )}  
           </>

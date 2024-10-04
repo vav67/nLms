@@ -41,7 +41,7 @@ state.accessTokenShop = action.payload.accessTokenShop;
  
 shopInseller: ( state, action: PayloadAction<{ seller: string }>
    ) => {
-    console.log( '%%%=shopInseller=====', action.payload.seller  )   
+ 
  state.seller = action.payload.seller; // инфа о продавце магазине
  },
 

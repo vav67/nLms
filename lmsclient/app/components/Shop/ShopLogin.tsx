@@ -19,13 +19,14 @@ type Props = {
   setOpen: (open: boolean) => void;
  setRoute: (route: string) => void;
  activeItem: any;
+ refetch?:any;
 };
 
 //const Profile: FC<Props> = ({ user }) => {
-const ShopLogin: FC = ({ open, setOpen, setRoute,   activeItem }:any) => {
+const ShopLogin: FC = ({ open, setOpen, setRoute,   activeItem, refetch }:any) => {
    
     
- const { activationTokenShop,  message } = useSelector((state: any) => state.shop); 
+ ////const { activationTokenShop,  message } = useSelector((state: any) => state.shop); 
 //   const navigate = useNavigate();//перемещение по страницам
 const router = useRouter();
 //   //состояния (переменные)   
@@ -123,24 +124,30 @@ await inlogin({  email , password }); //данные отправили в сл�
 // //--------------------
 useEffect(() => {
  if (isSuccess) {
-   toast.success(message);
+setOpen(false)
+
+ refetch()
+ //  toast.success(message);
    ////////////////////////////////////////////////   
 // логин ок
   toast.success("Login Success!");
 // navigate("/dashboard");  панель управления магазином 
-// window.location.reload(true); 
+// window.location.reload(); 
 //////router.push("/shopdashboardpage");
-setOpen(false)
+
+
  }
 
 
+ 
+
+
    if (error) {  //если ошибка
-      console.log( '-----если ошибка=', error )
-       toast.error( '----если ошибка');
+   
       if ("data" in error) {
         const errorData = error as any; 
         toast.error(errorData.data.message);
-      console.log( 'это ошибка=', errorData.data.message )
+  //    console.log( 'это ошибка=', errorData.data.message )
       }
    
 
@@ -173,7 +180,7 @@ setOpen(false)
 
   
 
- console.log( activeItem,'-activeItem name=', name, "  email=", email )
+ //console.log( activeItem,'-activeItem name=', name, "  email=", email )
 
 
  return (
