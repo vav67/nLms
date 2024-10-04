@@ -122,12 +122,12 @@ export const isAutheticated = CatchAsyncError(
       
    // соединение с бд
    await connectDB();
-   
-    //берем из redis  
-           const user = await redis.get(decoded.id);
-          console.log("4------промежуточное isAutheticated из редис", user)   
 
-      if (!user) { //в redis jncencndetn
+    //берем из redis  
+        ///////пока   const user = await redis.get(decoded.id);
+        ///////пока    console.log("4------промежуточное isAutheticated из редис", user)   
+
+  ///////пока      if (!user) { //в redis jncencndetn
        
        try {
         const uu:any = await User.findById(decoded.id)
@@ -143,10 +143,10 @@ export const isAutheticated = CatchAsyncError(
           new ErrorHandler("Please redis login to access this resource", 400)
         );
       } 
-    }
-      else {  req.user = JSON.parse(user);
-                    next()
-      }
+    ///////пока  }
+    ///////пока    else {  req.user = JSON.parse(user);
+      ///////пока                next()
+     ///////пока   }
 
     }
   }

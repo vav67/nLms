@@ -21,17 +21,16 @@ export const getUserById = async (id: string, res: Response) => {
   //console.log( "получим с кэша redis, и пользователь передается в формате Json")
    // соединение с бд
    await connectDB();
-  const userJson = await redis.get(id);
-
-
+   ///////пока const userJson = await redis.get(id);
+   
  // получим с кэша redis, и пользователь передается в
  // формате Json
  let user
-  if (userJson) {
-      user = JSON.parse(userJson);
-    res.status(201).json({ success: true, user, });
-  } else
-  {
+   ///////пока if (userJson) {
+   ///////пока     user = JSON.parse(userJson);
+   ///////пока   res.status(201).json({ success: true, user, });
+   ///////пока } else
+  ///////пока  {
 
    // соединение с бд
    await connectDB();
@@ -44,7 +43,7 @@ export const getUserById = async (id: string, res: Response) => {
 
    
   
-  }
+   ///////пока }
  
 
 };

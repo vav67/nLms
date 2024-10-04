@@ -7,6 +7,8 @@ exports.authorizeRoles = exports.isAutheticated = exports.isttt = void 0;
 const catchAsyncErrors_1 = require("./catchAsyncErrors");
 const ErrorHandler_1 = __importDefault(require("../utils/ErrorHandler"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const user_model_1 = __importDefault(require("../models/user.model"));
+const db_1 = __importDefault(require("../utils/db"));
 const redis_1 = require("../utils/redis");
 const user_controller_1 = require("../controllers/user.controller");
 exports.isttt = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
@@ -29,7 +31,7 @@ exports.isttt = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) =
         // console.log(decoded, "------промежуточное isttt /////// ПРОШОЛ")
         // Проверка, истек ли срок действия токена доступа
         if (decoded.exp && decoded.exp <= Date.now() / 1000) {
-            console.log("------ промежуточное isAuthenticated ------ срок действия истек");
+            // console.log("------ промежуточное isAuthenticated ------ срок действия истек");
             await (0, user_controller_1.updateAccessToken)(req, res, next);
         }
         else {
@@ -43,10 +45,10 @@ exports.isttt = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) =
         }
     }
     catch (error) {
-        console.error("------ промежуточное isAuthenticated ------ ошибка при проверке токена", error);
+        // console.error("------ промежуточное isAuthenticated ------ ошибка при проверке токена", error);
         // Обработка различных ошибок
         if (error instanceof jsonwebtoken_1.default.TokenExpiredError) {
-            console.log("------ промежуточное isAuthenticated ------ срок действия истек");
+            // console.log("------ промежуточное isAuthenticated ------ срок действия истек");
             // Обновляем токен, если он истек     
             // return next(new ErrorHandler("Access token expired", 401));
             // заменим на 
@@ -66,21 +68,22 @@ exports.isAutheticated = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res
     //  await connectDB();
     //const access_token = req.cookies.access_token as string;
     const access_token = req.cookies.access_token;
-    //console.log("------промежуточное isAutheticated /////// access_token=", access_token)    
+    console.log("1------промежуточное isAutheticated /////// access_token=", access_token);
     if (!access_token) {
         return next(new ErrorHandler_1.default("No access_token this resource", 400));
     }
     //    const decoded = jwt.decode(access_token) as JwtPayload;
     // декодируем , учитывая соль
     const decoded = jsonwebtoken_1.default.verify(access_token, process.env.ACCESS_TOKEN);
-    //console.log("------промежуточное isAutheticated /////// декодируем =", decoded)  
+    console.log("2------промежуточное isAutheticated /////// декодируем =", decoded);
     if (!decoded) {
+        // console.log("2-2-----промежуточное isAutheticated access token is not valid" ) 
         return next(new ErrorHandler_1.default("access token is not valid", 400));
     }
     // проверьте, истек ли срок действия токена доступа
     if (decoded.exp && decoded.exp <= Date.now() / 1000) {
         try {
-            //console.log("------промежуточное isAutheticated  срок действия")    
+            console.log("3333------промежуточное isAutheticated  срок действия");
             await (0, user_controller_1.updateAccessToken)(req, res, next);
         }
         catch (error) {
@@ -88,13 +91,27 @@ exports.isAutheticated = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res
         }
     }
     else {
+        // соединение с бд
+        await (0, db_1.default)();
         //берем из redis  
         const user = await redis_1.redis.get(decoded.id);
+        console.log("4------промежуточное isAutheticated из редис", user);
         if (!user) { //в redis jncencndetn
-            return next(new ErrorHandler_1.default("Please redis login to access this resource", 400));
+            try {
+                const uu = await user_model_1.default.findById(decoded.id);
+                console.log("5------промежуточное isAutheticated  поиск", uu);
+                req.user = uu; //  JSON.parse(uu);
+                console.log("33------промежуточное isAutheticated /  =", req.user);
+                next();
+            }
+            catch (error) {
+                return next(new ErrorHandler_1.default("Please redis login to access this resource", 400));
+            }
         }
-        req.user = JSON.parse(user);
-        next();
+        else {
+            req.user = JSON.parse(user);
+            next();
+        }
     }
 });
 // validate user role

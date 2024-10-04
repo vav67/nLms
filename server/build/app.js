@@ -64,9 +64,13 @@ shop_route_1.default, shopproduct_route_1.default);
 exports.app.get("/test", (req, res, next) => {
     const acc = req.cookies.access_token;
     //const acc = JSON.parse(req.cookies.get('access_token')?.value || 'no')
+    // соединение с бд
+    //await connectDB();
+    //  запишем в редис
+    //await redis.set("idtest", JSON.stringify(acc));// запишем в кэш
     res.status(200).json({
         success: true,
-        message: "API is working-23 июля - 12:25 acctoken=" + acc,
+        message: "API is  redis working-04-10 - 15:19 acctoken=" + acc,
     });
 });
 //бывает что не правильно набрали адрес пути, отобразим ошибку

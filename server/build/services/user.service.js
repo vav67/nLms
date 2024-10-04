@@ -24,9 +24,18 @@ const getUserById = async (id, res) => {
     const userJson = await redis_1.redis.get(id);
     // получим с кэша redis, и пользователь передается в
     // формате Json
+    let user;
     if (userJson) {
-        const user = JSON.parse(userJson);
+        user = JSON.parse(userJson);
         res.status(201).json({ success: true, user, });
+    }
+    else {
+        // соединение с бд
+        await (0, db_1.default)();
+        user = await user_model_1.default.findById(id);
+        //  запишем в редис
+        // await redis.set(id, JSON.stringify(user));// запишем в кэш
+        res.status(209).json({ success: true, user, });
     }
 };
 exports.getUserById = getUserById;

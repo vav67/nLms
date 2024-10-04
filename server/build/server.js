@@ -7,7 +7,7 @@ const app_1 = require("./app");
 const cloudinary_1 = require("cloudinary");
 const http_1 = __importDefault(require("http"));
 const db_1 = __importDefault(require("./utils/db"));
-const socketServer_1 = require("./socketServer");
+// приостановил 03-10-2024  import { initSocketServer } from "./socketServer";
 require("dotenv").config();
 const startServer = async () => {
     const server = http_1.default.createServer(app_1.app);
@@ -19,7 +19,7 @@ const startServer = async () => {
         api_key: process.env.CLOUD_API_KEY,
         api_secret: process.env.CLOUD_SECRET_KEY,
     });
-    (0, socketServer_1.initSocketServer)(server); // Инициализируем сокет-сервер
+    // приостановил 03-10-2024 initSocketServer(server); // Инициализируем сокет-сервер
     //create server  // Запускаем сервер на прослушивание порта
     //app.listen(process.env.PORT, () => { приложение делаем сервером
     server.listen(process.env.PORT, () => {

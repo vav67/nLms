@@ -15,8 +15,7 @@ import userRouter from "./routes/user.route";
   import { rateLimit } from 'express-rate-limit'  //ограничение против спама
 import shopRouter from "./routes/shop.route";
   import shopproductRouter from "./routes/shopproduct.route";
-import connectDB from "./utils/db";
-import { redis } from "./utils/redis";
+ 
 
 
   //const allowedOrigins = process.env.ORIGIN 
@@ -93,20 +92,18 @@ app.use( "/api/v1",
 
 
    //testing api - это тест API
-app.get("/test", async (req: Request, res: Response, next: NextFunction) => {
+app.get("/test",  (req: Request, res: Response, next: NextFunction) => {
     
  const acc = req.cookies.access_token as string;
  //const acc = JSON.parse(req.cookies.get('access_token')?.value || 'no')
 // соединение с бд
-await connectDB();
-
- 
+  //await connectDB();
 //  запишем в редис
-  await redis.set("idtest", JSON.stringify(acc));// запишем в кэш
+  //await redis.set("idtest", JSON.stringify(acc));// запишем в кэш
 
   res.status(200).json({
       success: true,
-      message: "API is  redis working-04-10 - 15:19 acctoken="+ acc ,
+      message: "API is  =NO redis= working-04-10 - 15:55 acctoken="+ acc ,
     });
 
   });
